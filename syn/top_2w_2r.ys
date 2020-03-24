@@ -1,0 +1,28 @@
+# read design
+read -sv src/bram.sv
+read -sv src/bram_bank.sv
+read -sv src/accounter.sv
+read -sv src/mem_map_accounter.sv
+read -sv src/read_switch.sv
+read -sv src/top_2w_2r.sv
+
+# elaborate design hierarchy
+hierarchy -check -top top
+
+# the high-level stuff
+proc; opt; fsm; opt; memory; opt
+
+# mapping to internal cell library
+# techmap; opt
+
+# mapping flip-flops to mycells.lib
+# dfflibmap -liberty mycells.lib
+
+# mapping logic to mycells.lib
+# abc -liberty mycells.lib
+
+# cleanup
+clean
+
+# write synthesized design
+# write_verilog synth.v
