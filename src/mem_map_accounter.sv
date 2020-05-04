@@ -4,7 +4,7 @@
 
 // MemoryMapAccounter instantiates an accounter for each
 // read agent. Each accounter monitors the write agents
-// to detect which one updated a row last.
+// xfers to detect which one updated a row last.
 
 `default_nettype none
 
@@ -37,14 +37,15 @@ module MemoryMapAccounter
         for (i=0; i<NB_RDAGENT; i=i+1) begin
             Accounter 
             #(
-            .ADDR_WIDTH (ADDR_WIDTH),
-            .RAM_DEPTH  (RAM_DEPTH ),
-            .NB_WRAGENT (NB_WRAGENT)
+            .ADDR_WIDTH   (ADDR_WIDTH),
+            .RAM_DEPTH    (RAM_DEPTH ),
+            .NB_WRAGENT   (NB_WRAGENT),
+            .SELECT_WIDTH (SELECT_WIDTH)
             ) accounter_insts (
             .aclk     (aclk),
             .aresetn  (aresetn),
-            .wren     (wren[i]),
-            .wraddr   (wraddr[ADDR_WIDTH*i+:ADDR_WIDTH]),
+            .wren     (wren),
+            .wraddr   (wraddr),
             .rden     (rden[i]),
             .rdaddr   (rdaddr[ADDR_WIDTH*i+:ADDR_WIDTH]),
             .rdselect (rdselect[SELECT_WIDTH*i+:SELECT_WIDTH])

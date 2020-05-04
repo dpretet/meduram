@@ -133,3 +133,4 @@ TODO.md
 .svut
 dump.vcd
 *.out
+svut_h.sv

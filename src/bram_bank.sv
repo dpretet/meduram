@@ -13,11 +13,11 @@ module BramBank
     // Number of write agent, thus number of bank
     parameter NB_WRAGENT = 2,
     // Addr Width in bits
-    parameter ADDR_WIDTH = 9,
+    parameter ADDR_WIDTH = 8,
     // RAM depth
     parameter RAM_DEPTH = 2**ADDR_WIDTH,
     // Data Width in bits
-    parameter DATA_WIDTH = 64
+    parameter DATA_WIDTH = 32
     )(
     // Write Port
     input  wire                             wrclk,

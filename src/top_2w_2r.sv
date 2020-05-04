@@ -8,11 +8,11 @@ module top
 
     #(
     // Addr Width in bits
-    parameter ADDR_WIDTH = 9,
+    parameter ADDR_WIDTH = 8,
     // RAM depth
     parameter RAM_DEPTH = 2**ADDR_WIDTH,
     // Data Width in bits
-    parameter DATA_WIDTH = 64
+    parameter DATA_WIDTH = 32
     )(
     input  wire                  aclk,
     input  wire                  aresetn,
@@ -30,6 +30,8 @@ module top
     output wire [DATA_WIDTH-1:0] rddata2
     );
 
+    initial $dumpvars(0, top);
+
     localparam NB_WRAGENT   = 2;
     localparam NB_RDAGENT   = 2;
     localparam SELECT_WIDTH = NB_WRAGENT == 1 ? 1 : $clog2(NB_WRAGENT);
@@ -37,7 +39,6 @@ module top
     // Interconnections on write sides of the bram banks
     wire [             NB_WRAGENT-1:0] wren;
     wire [  NB_WRAGENT*ADDR_WIDTH-1:0] wraddr;
-    wire [NB_WRAGENT*DATA_WIDTH/8-1:0] wrbe;
     wire [  NB_WRAGENT*DATA_WIDTH-1:0] wrdata;
     wire [             NB_RDAGENT-1:0] rden;
     wire [  NB_RDAGENT*ADDR_WIDTH-1:0] rdaddr;

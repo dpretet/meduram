@@ -13,7 +13,7 @@ module ReadSwitch
     // Write/Read address width
     parameter ADDR_WIDTH = 8,
     // Data Width in bits
-    parameter DATA_WIDTH = 64,
+    parameter DATA_WIDTH = 32,
     // Number of write agent, thus number of bank
     parameter NB_WRAGENT = 2,
     // Number of read agent
@@ -42,7 +42,7 @@ module ReadSwitch
         input [NB_RDAGENT-1:0] en;      // All enable gathered
         input [NB_RDAGENT*SELECT_WIDTH-1:0] select; //  All select gathered 
 
-        selectAgent = 0;
+        selectAgent = {SELECT_WIDTH+1{1'b0}};
         for (int i=0;i<NB_RDAGENT;i=i+1) begin
             
             if (en[i] == 1'b1 && 
@@ -60,12 +60,13 @@ module ReadSwitch
     // is not handled here but at AXI level.
     for (wr=0; wr<NB_WRAGENT; wr=wr+1) begin : ADDR_SWITCHS
         // Select the agent to drive the bram bank
+        // MSB indicates the bram needs to be activated, LSBs are the agent id
         wire [SELECT_WIDTH:0] agtSel;
         assign agtSel = selectAgent(wr, m_rden, rdselect);
-        // Switch enable and address
+        // Switch enable and address. Enable only if is really selected
         assign s_rden[wr] = agtSel[SELECT_WIDTH] & m_rden[agtSel[SELECT_WIDTH-1:0]];
         assign s_rdaddr[ADDR_WIDTH*wr+:ADDR_WIDTH] = 
-            m_rdaddr[ADDR_WIDTH*agtSel+:ADDR_WIDTH];
+            m_rdaddr[ADDR_WIDTH*agtSel[SELECT_WIDTH-1:0]+:ADDR_WIDTH];
     end
 
     // Drives the read data to the agent based on selected bank by accounter
