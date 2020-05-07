@@ -36,8 +36,6 @@ module Accounter
 
     logic [SELECT_WIDTH*RAM_DEPTH-1:0] cells;
 
-    // assign rdselect = {SELECT_WIDTH{1'b0}};
-
     // Write monitoring to store for each row the last agent
     // which updated the address
     always @ (posedge aclk or negedge aresetn) begin
@@ -47,11 +45,13 @@ module Accounter
             // Parse all active write agents and store into the cell
             // the one accessing the memory row. Write collision are not
             // addressed and last one parsed is considered as the winner.
-            for (int ix=0;ix<RAM_DEPTH-1;ix=ix+1) begin
-                for (int i=0;i<NB_WRAGENT;i=i+1) begin
-                    if (wren[i] == 1'b1 &&
-                        wraddr[ADDR_WIDTH*i+:ADDR_WIDTH] == ix[ADDR_WIDTH-1:0])
-                        cells[ix] <= i[SELECT_WIDTH-1:0];
+            for (int cix=0;cix<RAM_DEPTH;cix=cix+1) begin
+                // Assign into the cells the write agent index
+                // if its address matches the cell index
+                for (int wix=0;wix<NB_WRAGENT;wix=wix+1) begin
+                    if (wren[wix] == 1'b1 &&
+                        wraddr[ADDR_WIDTH*wix+:ADDR_WIDTH] == cix[ADDR_WIDTH-1:0])
+                        cells[SELECT_WIDTH*cix+:SELECT_WIDTH] <= wix[SELECT_WIDTH-1:0];
                 end
             end
         end
