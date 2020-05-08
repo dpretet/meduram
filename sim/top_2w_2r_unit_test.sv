@@ -11,6 +11,10 @@ module top_2w_2r_unit_test;
     parameter RAM_DEPTH = 2**ADDR_WIDTH;
     parameter DATA_WIDTH = 32;
 
+    parameter AGENT1 = 1;
+    parameter AGENT2 = 2;
+    parameter MAX_TEST_RUN = 16;
+
     reg                   aclk;
     reg                   aresetn;
     reg                   wren1;
@@ -84,33 +88,9 @@ module top_2w_2r_unit_test;
     end
     endtask
 
-    `TEST_SUITE("BASIC SUITE")
+    // `include "sequential_suite.sv"
 
-    `UNIT_TEST("Write then Read some dummy words")
-
-        writeAgent(AGENT1, 100, 32'h0000BEEF);
-        readAgent(AGENT1, 100, request);
-        `ASSERT((request === 32'h0000BEEF), "Error! Should fetch a beef...");
-
-        writeAgent(AGENT1, 34, 32'h00001234);
-        readAgent(AGENT2, 34, request);
-        `ASSERT((request === 32'h00001234), "Error! Should fetch a 1234...");
-
-        writeAgent(AGENT2, 0, 32'h00009876);
-        readAgent(AGENT1, 0, request);
-        `ASSERT((request === 32'h00009876), "Error! Should fetch 9876...");
-
-        writeAgent(AGENT2, RAM_DEPTH-1, 32'hB00B);
-        readAgent(AGENT2, RAM_DEPTH-1, request);
-        `ASSERT((request === 32'h0000B00B), "Error! Should fetch a boob...");
-
-    `UNIT_TEST_END
-
-    // `UNIT_TEST
-
-    // `UNIT_TEST_END
-
-    `TEST_SUITE_END
+    `include "concurrent_suite.sv"
 
 endmodule
 

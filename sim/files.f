@@ -4,3 +4,4 @@
 ../src/mem_map_accounter.sv
 ../src/read_switch.sv
 ../src/top_2w_2r.sv
++define+VERBOSE

@@ -1,19 +1,24 @@
-parameter AGENT1 = 1;
-parameter AGENT2 = 2;
-
+/// Check if the agent index to use are correct
 task checkAgent(input integer agent);
+    if (agent < AGENT1) begin
+        `ERROR("Agent index can't lower than 1");
+        $finish;
+    end
     // Finish simulation if don't use a correct index
-    if (agent > 2) begin
+    if (agent > AGENT2) begin
         `ERROR("No more than 2 agents are supported in this testbench");
         $finish;
     end
 endtask
 
+/// Task to write a memory address by selecting the agent to use
 task writeAgent(input integer agent, input integer addr, input integer data);
 begin
-    string msg;
-    $sformat(msg, "Write access start with agent %0d", agent);
-    `INFO(msg);
+    `ifdef VERBOSE
+        string msg;
+        $sformat(msg, "Write access start with agent %0d", agent);
+        `INFO(msg);
+    `endif
     checkAgent(agent);
 
     // Wait for posedge and write a data into memory
@@ -22,7 +27,8 @@ begin
         wren1 = 1'b1;
         wraddr1 = addr;
         wrdata1 = data;
-    end else if (agent == AGENT2) begin
+    end 
+    if (agent == AGENT2) begin
         wren2 = 1'b1;
         wraddr2 = addr;
         wrdata2 = data;
@@ -31,16 +37,21 @@ begin
     // Deassert the xfer after one cycle
     @ (posedge aclk);
     if (agent == AGENT1) wren1 = 1'b0;
-    else if (agent == AGENT2) wren2 = 1'b0;
-    `INFO("Write access done");
+    if (agent == AGENT2) wren2 = 1'b0;
+    `ifdef VERBOSE
+        `INFO("Write access done");
+    `endif
 end
 endtask
 
+/// Task to read a memory address with a specific agent
 task readAgent(input integer agent, input integer addr, output integer value);
 begin
-    string msg;
-    $sformat(msg, "Read access start with agent %0d", agent);
-    `INFO(msg);
+    `ifdef VERBOSE
+        string msg;
+        $sformat(msg, "Read access start with agent %0d", agent);
+        `INFO(msg);
+    `endif
     checkAgent(agent);
 
     // Wait for posedge and read a memory address
@@ -48,7 +59,8 @@ begin
     if (agent == AGENT1) begin
         rden1 = 1'b1;
         rdaddr1 = addr;
-    end else if (agent == AGENT2) begin
+    end 
+    if (agent == AGENT2) begin
         rden2 = 1'b1;
         rdaddr2 = addr;
     end
@@ -59,12 +71,33 @@ begin
     if (agent == AGENT1) begin
         rden1 = 1'b0;
         value = rddata1;
-    end else if (agent == AGENT2) begin
+    end 
+    if (agent == AGENT2) begin
         rden2 = 1'b0;
         value = rddata2;
     end
-    $sformat(msg, "Value read: %x", value);
-    `INFO(msg);
-    `INFO("Read access done");
+    `ifdef VERBOSE
+        $sformat(msg, "Value read: %x", value);
+        `INFO(msg);
+        `INFO("Read access done");
+    `endif
 end
 endtask
+
+/// get a random agent index
+function integer pickRandomAgent();
+    integer ix;
+    ix = $urandom() % 3;
+    if (ix<1) ix = AGENT1;
+    if (ix>2) ix = AGENT2;
+    pickRandomAgent = ix; 
+endfunction
+
+/// get a random address
+function integer pickRandomAddr();
+    integer _rand;
+    _rand = $urandom();
+    if (_rand >= RAM_DEPTH)
+        _rand = RAM_DEPTH - 1;
+    pickRandomAddr = _rand;
+endfunction

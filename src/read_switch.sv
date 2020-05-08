@@ -10,41 +10,41 @@
 module ReadSwitch
 
     #(
-    // Write/Read address width
-    parameter ADDR_WIDTH = 8,
-    // Data Width in bits
-    parameter DATA_WIDTH = 32,
-    // Number of write agent, thus number of bank
-    parameter NB_WRAGENT = 2,
-    // Number of read agent
-    parameter NB_RDAGENT = 2,
-    // Width of the read selector to use output mux
-    parameter SELECT_WIDTH = 1 ? 1 : $clog2(NB_WRAGENT)
+        // Write/Read address width
+        parameter ADDR_WIDTH = 8,
+        // Data Width in bits
+        parameter DATA_WIDTH = 32,
+        // Number of write agent, thus number of bank
+        parameter NB_WRAGENT = 2,
+        // Number of read agent
+        parameter NB_RDAGENT = 2,
+        // Width of the read selector to use output mux
+        parameter SELECT_WIDTH = NB_WRAGENT == 1 ? 1 : $clog2(NB_WRAGENT)
     )(
-    input  wire                               aclk,
-    input  wire                               aresetn,
-    output wire [             NB_RDAGENT-1:0] s_rden,
-    output wire [  NB_WRAGENT*ADDR_WIDTH-1:0] s_rdaddr,
-    input  wire [  NB_WRAGENT*DATA_WIDTH-1:0] s_rddata,
-    input  wire [NB_RDAGENT*SELECT_WIDTH-1:0] rdselect,
-    input  wire [             NB_RDAGENT-1:0] m_rden,
-    input  wire [  NB_RDAGENT*ADDR_WIDTH-1:0] m_rdaddr,
-    output wire [  NB_RDAGENT*DATA_WIDTH-1:0] m_rddata
+        input  wire                               aclk,
+        input  wire                               aresetn,
+        output wire [             NB_RDAGENT-1:0] s_rden,
+        output wire [  NB_WRAGENT*ADDR_WIDTH-1:0] s_rdaddr,
+        input  wire [  NB_WRAGENT*DATA_WIDTH-1:0] s_rddata,
+        input  wire [NB_RDAGENT*SELECT_WIDTH-1:0] rdselect,
+        input  wire [             NB_RDAGENT-1:0] m_rden,
+        input  wire [  NB_RDAGENT*ADDR_WIDTH-1:0] m_rdaddr,
+        output wire [  NB_RDAGENT*DATA_WIDTH-1:0] m_rddata
     );
 
     genvar wr, rd;
-    
+
     // Round robin arbiter to select the appropriate address 
     // to route to a memory bank
     function [SELECT_WIDTH:0] selectAgent;
-        
+
         input [SELECT_WIDTH-1:0] idx;   // Agent id
         input [NB_RDAGENT-1:0] en;      // All enable gathered
         input [NB_RDAGENT*SELECT_WIDTH-1:0] select; //  All select gathered 
 
         selectAgent = {SELECT_WIDTH+1{1'b0}};
         for (int i=0;i<NB_RDAGENT;i=i+1) begin
-            
+
             if (en[i] == 1'b1 && 
                 select[SELECT_WIDTH*i+:SELECT_WIDTH] == idx[SELECT_WIDTH-1:0])
                 // Assert MSB to signify an agent has been selected. Else
@@ -71,7 +71,7 @@ module ReadSwitch
 
     // Drives the read data to the agent based on selected bank by accounter
     for (rd=0; rd<NB_RDAGENT; rd=rd+1) begin : DATA_SWITCHS
-        
+
         // Pipeline the selector while BRAM banks uses a FFDed output
         logic [SELECT_WIDTH-1:0] dataSel;
         always @ (posedge aclk or negedge aresetn) begin
@@ -85,7 +85,7 @@ module ReadSwitch
         assign m_rddata[DATA_WIDTH*rd+:DATA_WIDTH] = 
             s_rddata[DATA_WIDTH*dataSel+:DATA_WIDTH];
     end
-    
+
 endmodule
 
 `resetall
