@@ -1,4 +1,4 @@
-/// Check if the agent index to use are correct
+/// Check if the agent index to use is correct
 task checkAgent(input integer agent);
     if (agent < AGENT1) begin
         `ERROR("Agent index can't lower than 1");
@@ -27,7 +27,7 @@ begin
         wren1 = 1'b1;
         wraddr1 = addr;
         wrdata1 = data;
-    end 
+    end
     if (agent == AGENT2) begin
         wren2 = 1'b1;
         wraddr2 = addr;
@@ -38,6 +38,34 @@ begin
     @ (posedge aclk);
     if (agent == AGENT1) wren1 = 1'b0;
     if (agent == AGENT2) wren2 = 1'b0;
+    `ifdef VERBOSE
+        `INFO("Write access done");
+    `endif
+end
+endtask
+
+/// Task to write a memory address with both agents, same addr but different data
+task writeBothAgents(input integer addr, input integer data1, input integer data2);
+begin
+    `ifdef VERBOSE
+        string msg;
+        $sformat(msg, "Write access start with both agents");
+        `INFO(msg);
+    `endif
+
+    // Wait for posedge and write a data into memory
+    @ (posedge aclk);
+    wren1 = 1'b1;
+    wraddr1 = addr;
+    wrdata1 = data1;
+    wren2 = 1'b1;
+    wraddr2 = addr;
+    wrdata2 = data2;
+
+    // Deassert the xfer after one cycle
+    @ (posedge aclk);
+    wren1 = 1'b0;
+    wren2 = 1'b0;
     `ifdef VERBOSE
         `INFO("Write access done");
     `endif
@@ -59,7 +87,7 @@ begin
     if (agent == AGENT1) begin
         rden1 = 1'b1;
         rdaddr1 = addr;
-    end 
+    end
     if (agent == AGENT2) begin
         rden2 = 1'b1;
         rdaddr2 = addr;
@@ -71,7 +99,7 @@ begin
     if (agent == AGENT1) begin
         rden1 = 1'b0;
         value = rddata1;
-    end 
+    end
     if (agent == AGENT2) begin
         rden2 = 1'b0;
         value = rddata2;
@@ -90,14 +118,14 @@ function integer pickRandomAgent();
     ix = $urandom() % 3;
     if (ix<1) ix = AGENT1;
     if (ix>2) ix = AGENT2;
-    pickRandomAgent = ix; 
+    pickRandomAgent = ix;
 endfunction
 
 /// get a random address
 function integer pickRandomAddr();
-    integer _rand;
-    _rand = $urandom();
-    if (_rand >= RAM_DEPTH)
-        _rand = RAM_DEPTH - 1;
-    pickRandomAddr = _rand;
+    integer _rand_addr;
+    _rand_addr = $urandom() % RAM_DEPTH;
+    if (_rand_addr >= RAM_DEPTH)
+        _rand_addr = RAM_DEPTH - 1;
+    pickRandomAddr = _rand_addr;
 endfunction

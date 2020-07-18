@@ -2,6 +2,7 @@
 // Distributed under the MIT License
 // https://opensource.org/licenses/mit-license.php
 
+`timescale 1 ns / 100 ps
 `default_nettype none
 
 module top
@@ -116,7 +117,6 @@ module top
         .m_rdaddr (rdaddr),
         .m_rddata (rddata)
     );
-
 
 endmodule
 

@@ -8,6 +8,7 @@
 // choose the right memory bank.
 // Internally, the accounter uses FFDs to store this information.
 
+`timescale 1 ns / 100 ps
 `default_nettype none
 
 module Accounter

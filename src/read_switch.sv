@@ -5,6 +5,7 @@
 // This module aims to switch the different banks' output 
 // to the read agents.
 
+`timescale 1 ns / 100 ps
 `default_nettype none
 
 module ReadSwitch
@@ -32,7 +33,7 @@ module ReadSwitch
         output wire [  NB_RDAGENT*DATA_WIDTH-1:0] m_rddata
     );
 
-    genvar wr, rd;
+    genvar wrid, rdid;
 
     // Round robin arbiter to select the appropriate address 
     // to route to a memory bank
@@ -56,21 +57,20 @@ module ReadSwitch
 
     // Drives the address bus of bram banks based on selected agent request.
     // We need here an arbitration to select the appropriate source because
-    // two agents can select the same bank at the same time. The collision
-    // is not handled here but at AXI level.
-    for (wr=0; wr<NB_WRAGENT; wr=wr+1) begin : ADDR_SWITCHS
+    // two agents can select the same bank at the same time.
+    for (wrid=0; wrid<NB_WRAGENT; wrid=wrid+1) begin : ADDR_SWITCHS
         // Select the agent to drive the bram bank
         // MSB indicates the bram needs to be activated, LSBs are the agent id
         wire [SELECT_WIDTH:0] agtSel;
-        assign agtSel = selectAgent(wr, m_rden, rdselect);
+        assign agtSel = selectAgent(wrid, m_rden, rdselect);
         // Switch enable and address. Enable only if is really selected
-        assign s_rden[wr] = agtSel[SELECT_WIDTH] & m_rden[agtSel[SELECT_WIDTH-1:0]];
-        assign s_rdaddr[ADDR_WIDTH*wr+:ADDR_WIDTH] = 
+        assign s_rden[wrid] = agtSel[SELECT_WIDTH] & m_rden[agtSel[SELECT_WIDTH-1:0]];
+        assign s_rdaddr[ADDR_WIDTH*wrid+:ADDR_WIDTH] = 
             m_rdaddr[ADDR_WIDTH*agtSel[SELECT_WIDTH-1:0]+:ADDR_WIDTH];
     end
 
     // Drives the read data to the agent based on selected bank by accounter
-    for (rd=0; rd<NB_RDAGENT; rd=rd+1) begin : DATA_SWITCHS
+    for (rdid=0; rdid<NB_RDAGENT; rdid=rdid+1) begin : DATA_SWITCHS
 
         // Pipeline the selector while BRAM banks uses a FFDed output
         logic [SELECT_WIDTH-1:0] dataSel;
@@ -78,11 +78,11 @@ module ReadSwitch
             if (aresetn == 1'b0)
                 dataSel <= {SELECT_WIDTH{1'b0}};
             else
-                dataSel <= rdselect[SELECT_WIDTH*rd+:SELECT_WIDTH];
+                dataSel <= rdselect[SELECT_WIDTH*rdid+:SELECT_WIDTH];
         end
         // Simply select the part to transmit to the agent. Pipelining is
         // applied in upper layer of the hierarchy.
-        assign m_rddata[DATA_WIDTH*rd+:DATA_WIDTH] = 
+        assign m_rddata[DATA_WIDTH*rdid+:DATA_WIDTH] = 
             s_rddata[DATA_WIDTH*dataSel+:DATA_WIDTH];
     end
 

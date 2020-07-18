@@ -5,6 +5,7 @@
 // A dual port block RAM inference core. Both write and read port
 // use an independent clock.
 
+`timescale 1 ns / 100 ps
 `default_nettype none
 
 module Bram

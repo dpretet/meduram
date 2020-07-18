@@ -5,6 +5,7 @@
 // BramBank instantiates all necessary banks associated
 // to every single write agent.
 
+`timescale 1 ns / 100 ps
 `default_nettype none
 
 module BramBank

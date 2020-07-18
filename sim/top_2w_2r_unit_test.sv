@@ -11,6 +11,7 @@ module top_2w_2r_unit_test;
     parameter RAM_DEPTH = 2**ADDR_WIDTH;
     parameter DATA_WIDTH = 32;
 
+    parameter ALL = 0;
     parameter AGENT1 = 1;
     parameter AGENT2 = 2;
     parameter MAX_TEST_RUN = 16;

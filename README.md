@@ -17,6 +17,12 @@ It's widely inspired by the concepts discussed in the paper
 ["Efficient Multi-Ported Memories for FPGAs"](http://www.eecg.toronto.edu/~steffan/papers/laforest_fpga10.pdf)
 by Charles Eric LaForest and J. Gregory Steffan.
 
+## Documentation
+
+[Introduction](doc/introduction.md)
+[Read and write collision](doc/rw_collision.md)
+[Parameters & Interface](doc/param_itfs.md)
+
 ## License
 
 This IP core is licensed under MIT license. It grants nearly all rights to use,

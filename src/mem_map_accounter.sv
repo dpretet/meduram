@@ -6,6 +6,7 @@
 // read agent. Each accounter monitors the write agents
 // xfers to detect which one updated a row last.
 
+`timescale 1 ns / 100 ps
 `default_nettype none
 
 module MemoryMapAccounter
