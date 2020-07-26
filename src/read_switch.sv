@@ -39,11 +39,12 @@ module ReadSwitch
     // to route to a memory bank
     function [SELECT_WIDTH:0] selectAgent;
 
-        input [SELECT_WIDTH-1:0] idx;   // Agent id
-        input [NB_RDAGENT-1:0] en;      // All enable gathered
-        input [NB_RDAGENT*SELECT_WIDTH-1:0] select; //  All select gathered 
+        input [           SELECT_WIDTH-1:0] idx; // Agent id
+        input [             NB_RDAGENT-1:0] en; // Enable gathered
+        input [NB_RDAGENT*SELECT_WIDTH-1:0] select; // Select gathered 
 
         selectAgent = {SELECT_WIDTH+1{1'b0}};
+
         for (int i=0;i<NB_RDAGENT;i=i+1) begin
 
             if (en[i] == 1'b1 && 

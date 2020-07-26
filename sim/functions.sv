@@ -112,6 +112,35 @@ begin
 end
 endtask
 
+/// Task to read a memory address with both agents, same addr
+task readBothAgents(input integer addr, 
+    output integer data1, output integer data2);
+begin
+    `ifdef VERBOSE
+        string msg;
+        $sformat(msg, "Read access start with both agents");
+        `INFO(msg);
+    `endif
+
+    // Wait for posedge and write a data into memory
+    @ (posedge aclk);
+    rden1 = 1'b1;
+    rdaddr1 = addr;
+    rden2 = 1'b1;
+    rdaddr2 = addr;
+
+    // Deassert the xfer after one cycle
+    @ (posedge aclk);
+    @ (negedge aclk);
+    rden1 = 1'b0;
+    rden2 = 1'b0;
+    data1 = rddata1;
+    data2 = rddata2;
+    `ifdef VERBOSE
+        `INFO("Read access done");
+    `endif
+end
+endtask
 /// get a random agent index
 function integer pickRandomAgent();
     integer ix;

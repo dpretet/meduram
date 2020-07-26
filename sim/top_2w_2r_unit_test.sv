@@ -14,7 +14,7 @@ module top_2w_2r_unit_test;
     parameter ALL = 0;
     parameter AGENT1 = 1;
     parameter AGENT2 = 2;
-    parameter MAX_TEST_RUN = 16;
+    parameter MAX_TEST_RUN = 4;
 
     reg                   aclk;
     reg                   aresetn;
@@ -32,6 +32,8 @@ module top_2w_2r_unit_test;
     wire [DATA_WIDTH-1:0] rddata2;
 
     integer               request;
+    integer               request1;
+    integer               request2;
 
     `include "functions.sv"
 
