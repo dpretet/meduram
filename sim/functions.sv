@@ -73,7 +73,8 @@ end
 endtask
 
 /// Task to read a memory address with a specific agent
-task readAgent(input integer agent, input integer addr, output integer value);
+task readAgent(input integer agent, input integer addr, 
+               output integer value, output collision);
 begin
     `ifdef VERBOSE
         string msg;
@@ -95,14 +96,16 @@ begin
 
     // Deassert the request and read data
     @ (posedge aclk);
+    rden1 = 1'b0;
+    rden2 = 1'b0;
     @ (negedge aclk);
     if (agent == AGENT1) begin
-        rden1 = 1'b0;
         value = rddata1;
+        collision = collision1;
     end
     if (agent == AGENT2) begin
-        rden2 = 1'b0;
         value = rddata2;
+        collision = collision2;
     end
     `ifdef VERBOSE
         $sformat(msg, "Value read: %x", value);
@@ -114,7 +117,8 @@ endtask
 
 /// Task to read a memory address with both agents, same addr
 task readBothAgents(input integer addr, 
-    output integer data1, output integer data2);
+    output integer data1, output integer data2,
+    output integer collision1, output integer collision2);
 begin
     `ifdef VERBOSE
         string msg;
@@ -131,11 +135,13 @@ begin
 
     // Deassert the xfer after one cycle
     @ (posedge aclk);
-    @ (negedge aclk);
     rden1 = 1'b0;
     rden2 = 1'b0;
+    @ (negedge aclk);
     data1 = rddata1;
     data2 = rddata2;
+    collision1 = collision1;
+    collision2 = collision2;
     `ifdef VERBOSE
         `INFO("Read access done");
     `endif

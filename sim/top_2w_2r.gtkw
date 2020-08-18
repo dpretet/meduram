@@ -1,15 +1,15 @@
 [*]
 [*] GTKWave Analyzer v3.3.103 (w)1999-2019 BSI
-[*] Sat May  9 14:31:08 2020
+[*] Sat Aug 22 14:45:14 2020
 [*]
-[dumpfile] "/Users/damien/workspace/fpga/meduram/sim/dump.vcd"
-[dumpfile_mtime] "Sat May  9 12:40:53 2020"
-[dumpfile_size] 32029
-[savefile] "/Users/damien/workspace/fpga/meduram/sim/top_2w_2r.gtkw"
+[dumpfile] "/Users/damien/workspace/hdl/meduram/sim/dump.vcd"
+[dumpfile_mtime] "Sat Aug 22 14:43:29 2020"
+[dumpfile_size] 33051
+[savefile] "/Users/damien/workspace/hdl/meduram/sim/top_2w_2r.gtkw"
 [timestart] 0
 [size] 1440 900
-[pos] -447 -270
-*-17.000000 22000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[pos] -1 -1
+*-14.522183 18000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 [treeopen] rs_inst.
 [treeopen] top_2w_2r_unit_test.
 [treeopen] top_2w_2r_unit_test.dut.
@@ -18,134 +18,190 @@
 [treeopen] top_2w_2r_unit_test.dut.bb_inst.RAMS_INST[1].
 [treeopen] top_2w_2r_unit_test.dut.mma_inst.
 [treeopen] top_2w_2r_unit_test.dut.mma_inst.genblk1[0].
+[treeopen] top_2w_2r_unit_test.dut.mma_inst.genblk1[0].accounter_insts.
+[treeopen] top_2w_2r_unit_test.dut.mma_inst.genblk1[0].accounter_insts.genblk1.genblk2[0].
 [treeopen] top_2w_2r_unit_test.genblk1[1].
-[sst_width] 193
-[signals_width] 411
+[treeopen] top_2w_2r_unit_test.genblk1[1].accounter_insts.
+[sst_width] 289
+[signals_width] 242
 [sst_expanded] 1
-[sst_vpaned_height] 343
+[sst_vpaned_height] 272
 @800200
--dut
+-top
 @28
 top_2w_2r_unit_test.dut.aclk
 top_2w_2r_unit_test.dut.aresetn
 top_2w_2r_unit_test.dut.wren1
+top_2w_2r_unit_test.dut.wraddr1[2:0]
 @22
-top_2w_2r_unit_test.dut.wraddr1[7:0]
-top_2w_2r_unit_test.dut.wrdata1[31:0]
+top_2w_2r_unit_test.dut.wrdata1[7:0]
 @28
 top_2w_2r_unit_test.dut.wren2
-@23
-top_2w_2r_unit_test.dut.wraddr2[7:0]
+top_2w_2r_unit_test.dut.wraddr2[2:0]
 @22
-top_2w_2r_unit_test.dut.wrdata2[31:0]
+top_2w_2r_unit_test.dut.wrdata2[7:0]
 @28
 top_2w_2r_unit_test.dut.rden1
+top_2w_2r_unit_test.dut.rdaddr1[2:0]
 @22
-top_2w_2r_unit_test.dut.rdaddr1[7:0]
-top_2w_2r_unit_test.dut.rddata1[31:0]
+top_2w_2r_unit_test.dut.rddata1[7:0]
 @28
+top_2w_2r_unit_test.dut.rdcollision1[1:0]
 top_2w_2r_unit_test.dut.rden2
+top_2w_2r_unit_test.dut.rdaddr2[2:0]
 @22
-top_2w_2r_unit_test.dut.rdaddr2[7:0]
-top_2w_2r_unit_test.dut.rddata2[31:0]
+top_2w_2r_unit_test.dut.rddata2[7:0]
+@28
+top_2w_2r_unit_test.dut.rdcollision2[1:0]
+@1000200
+-top
 @200
 -
-@28
-top_2w_2r_unit_test.dut.wren[1:0]
-@22
-top_2w_2r_unit_test.dut.wraddr[15:0]
-top_2w_2r_unit_test.dut.wrdata[63:0]
-@28
-top_2w_2r_unit_test.dut.rden[1:0]
-@22
-top_2w_2r_unit_test.dut.rdaddr[15:0]
-top_2w_2r_unit_test.dut.rddata[63:0]
-@28
-top_2w_2r_unit_test.dut.rdselect[1:0]
-top_2w_2r_unit_test.dut.s_rden[1:0]
-@22
-top_2w_2r_unit_test.dut.s_rddata[63:0]
-@1000200
--dut
-@800200
--bram_banks
-@28
-top_2w_2r_unit_test.dut.bb_inst.wrclk
-top_2w_2r_unit_test.dut.bb_inst.wren[1:0]
-@22
-top_2w_2r_unit_test.dut.bb_inst.wraddr[15:0]
-top_2w_2r_unit_test.dut.bb_inst.wrdata[63:0]
-@28
-top_2w_2r_unit_test.dut.bb_inst.rdclk
-top_2w_2r_unit_test.dut.bb_inst.rden[1:0]
-@22
-top_2w_2r_unit_test.dut.bb_inst.rdaddr[15:0]
-top_2w_2r_unit_test.dut.bb_inst.rddata[63:0]
-@200
--ram0
-@28
-top_2w_2r_unit_test.dut.bb_inst.RAMS_INST[0].bank_inst.wrclk
-top_2w_2r_unit_test.dut.bb_inst.RAMS_INST[0].bank_inst.wren
-@22
-top_2w_2r_unit_test.dut.bb_inst.RAMS_INST[0].bank_inst.wraddr[7:0]
-top_2w_2r_unit_test.dut.bb_inst.RAMS_INST[0].bank_inst.wrdata[31:0]
-@28
-top_2w_2r_unit_test.dut.bb_inst.RAMS_INST[0].bank_inst.rdclk
-top_2w_2r_unit_test.dut.bb_inst.RAMS_INST[0].bank_inst.rden
-@22
-top_2w_2r_unit_test.dut.bb_inst.RAMS_INST[0].bank_inst.rdaddr[7:0]
-top_2w_2r_unit_test.dut.bb_inst.RAMS_INST[0].bank_inst.rddata[31:0]
-@200
--ram1
-@28
-top_2w_2r_unit_test.dut.bb_inst.RAMS_INST[1].bank_inst.wrclk
-top_2w_2r_unit_test.dut.bb_inst.RAMS_INST[1].bank_inst.wren
-@22
-top_2w_2r_unit_test.dut.bb_inst.RAMS_INST[1].bank_inst.wraddr[7:0]
-top_2w_2r_unit_test.dut.bb_inst.RAMS_INST[1].bank_inst.wrdata[31:0]
-@28
-top_2w_2r_unit_test.dut.bb_inst.RAMS_INST[1].bank_inst.rdclk
-top_2w_2r_unit_test.dut.bb_inst.RAMS_INST[1].bank_inst.rden
-@22
-top_2w_2r_unit_test.dut.bb_inst.RAMS_INST[1].bank_inst.rdaddr[7:0]
-top_2w_2r_unit_test.dut.bb_inst.RAMS_INST[1].bank_inst.rddata[31:0]
-@1000200
--bram_banks
-@800200
--accounter0
-@1000200
+@c00200
 -accounter0
 @28
 top_2w_2r_unit_test.dut.mma_inst.genblk1[0].accounter_insts.aclk
 top_2w_2r_unit_test.dut.mma_inst.genblk1[0].accounter_insts.aresetn
-top_2w_2r_unit_test.dut.mma_inst.genblk1[0].accounter_insts.wren[1:0]
-@22
-top_2w_2r_unit_test.dut.mma_inst.genblk1[0].accounter_insts.wraddr[15:0]
-top_2w_2r_unit_test.dut.mma_inst.genblk1[0].accounter_insts.cells[255:0]
-top_2w_2r_unit_test.dut.mma_inst.genblk1[0].accounter_insts.rdaddr[7:0]
+top_2w_2r_unit_test.dut.mma_inst.genblk1[0].accounter_insts.bank_select[1:0]
+@800022
+top_2w_2r_unit_test.dut.mma_inst.genblk1[0].accounter_insts.cells[15:0]
 @28
+(0)top_2w_2r_unit_test.dut.mma_inst.genblk1[0].accounter_insts.cells[15:0]
+(1)top_2w_2r_unit_test.dut.mma_inst.genblk1[0].accounter_insts.cells[15:0]
+(2)top_2w_2r_unit_test.dut.mma_inst.genblk1[0].accounter_insts.cells[15:0]
+(3)top_2w_2r_unit_test.dut.mma_inst.genblk1[0].accounter_insts.cells[15:0]
+(4)top_2w_2r_unit_test.dut.mma_inst.genblk1[0].accounter_insts.cells[15:0]
+(5)top_2w_2r_unit_test.dut.mma_inst.genblk1[0].accounter_insts.cells[15:0]
+(6)top_2w_2r_unit_test.dut.mma_inst.genblk1[0].accounter_insts.cells[15:0]
+(7)top_2w_2r_unit_test.dut.mma_inst.genblk1[0].accounter_insts.cells[15:0]
+(8)top_2w_2r_unit_test.dut.mma_inst.genblk1[0].accounter_insts.cells[15:0]
+(9)top_2w_2r_unit_test.dut.mma_inst.genblk1[0].accounter_insts.cells[15:0]
+(10)top_2w_2r_unit_test.dut.mma_inst.genblk1[0].accounter_insts.cells[15:0]
+(11)top_2w_2r_unit_test.dut.mma_inst.genblk1[0].accounter_insts.cells[15:0]
+(12)top_2w_2r_unit_test.dut.mma_inst.genblk1[0].accounter_insts.cells[15:0]
+(13)top_2w_2r_unit_test.dut.mma_inst.genblk1[0].accounter_insts.cells[15:0]
+(14)top_2w_2r_unit_test.dut.mma_inst.genblk1[0].accounter_insts.cells[15:0]
+(15)top_2w_2r_unit_test.dut.mma_inst.genblk1[0].accounter_insts.cells[15:0]
+@1001200
+-group_end
+@c00022
+top_2w_2r_unit_test.dut.mma_inst.genblk1[0].accounter_insts.cells_collision[7:0]
+@28
+(0)top_2w_2r_unit_test.dut.mma_inst.genblk1[0].accounter_insts.cells_collision[7:0]
+(1)top_2w_2r_unit_test.dut.mma_inst.genblk1[0].accounter_insts.cells_collision[7:0]
+(2)top_2w_2r_unit_test.dut.mma_inst.genblk1[0].accounter_insts.cells_collision[7:0]
+(3)top_2w_2r_unit_test.dut.mma_inst.genblk1[0].accounter_insts.cells_collision[7:0]
+(4)top_2w_2r_unit_test.dut.mma_inst.genblk1[0].accounter_insts.cells_collision[7:0]
+(5)top_2w_2r_unit_test.dut.mma_inst.genblk1[0].accounter_insts.cells_collision[7:0]
+(6)top_2w_2r_unit_test.dut.mma_inst.genblk1[0].accounter_insts.cells_collision[7:0]
+(7)top_2w_2r_unit_test.dut.mma_inst.genblk1[0].accounter_insts.cells_collision[7:0]
+@1401200
+-group_end
+@420
+top_2w_2r_unit_test.dut.mma_inst.genblk1[0].accounter_insts.cix
+@28
+top_2w_2r_unit_test.dut.mma_inst.genblk1[0].accounter_insts.rdaddr[2:0]
 top_2w_2r_unit_test.dut.mma_inst.genblk1[0].accounter_insts.rden
-top_2w_2r_unit_test.dut.mma_inst.genblk1[0].accounter_insts.rdselect
-@800200
--accounter1
-@1000200
+@420
+top_2w_2r_unit_test.dut.mma_inst.genblk1[0].accounter_insts.wix
+@22
+top_2w_2r_unit_test.dut.mma_inst.genblk1[0].accounter_insts.wraddr[5:0]
+@28
+top_2w_2r_unit_test.dut.mma_inst.genblk1[0].accounter_insts.wren[1:0]
+@1401200
+-accounter0
+@c00200
 -accounter1
 @28
 top_2w_2r_unit_test.genblk1[1].accounter_insts.aclk
 top_2w_2r_unit_test.genblk1[1].accounter_insts.aresetn
-top_2w_2r_unit_test.genblk1[1].accounter_insts.wren[1:0]
-@22
-top_2w_2r_unit_test.genblk1[1].accounter_insts.wraddr[15:0]
-top_2w_2r_unit_test.genblk1[1].accounter_insts.cells[255:0]
+top_2w_2r_unit_test.genblk1[1].accounter_insts.bank_select[1:0]
+@800022
+top_2w_2r_unit_test.genblk1[1].accounter_insts.cells[15:0]
 @28
+(0)top_2w_2r_unit_test.genblk1[1].accounter_insts.cells[15:0]
+(1)top_2w_2r_unit_test.genblk1[1].accounter_insts.cells[15:0]
+(2)top_2w_2r_unit_test.genblk1[1].accounter_insts.cells[15:0]
+(3)top_2w_2r_unit_test.genblk1[1].accounter_insts.cells[15:0]
+(4)top_2w_2r_unit_test.genblk1[1].accounter_insts.cells[15:0]
+(5)top_2w_2r_unit_test.genblk1[1].accounter_insts.cells[15:0]
+(6)top_2w_2r_unit_test.genblk1[1].accounter_insts.cells[15:0]
+(7)top_2w_2r_unit_test.genblk1[1].accounter_insts.cells[15:0]
+(8)top_2w_2r_unit_test.genblk1[1].accounter_insts.cells[15:0]
+(9)top_2w_2r_unit_test.genblk1[1].accounter_insts.cells[15:0]
+(10)top_2w_2r_unit_test.genblk1[1].accounter_insts.cells[15:0]
+(11)top_2w_2r_unit_test.genblk1[1].accounter_insts.cells[15:0]
+(12)top_2w_2r_unit_test.genblk1[1].accounter_insts.cells[15:0]
+(13)top_2w_2r_unit_test.genblk1[1].accounter_insts.cells[15:0]
+(14)top_2w_2r_unit_test.genblk1[1].accounter_insts.cells[15:0]
+(15)top_2w_2r_unit_test.genblk1[1].accounter_insts.cells[15:0]
+@1001200
+-group_end
+@22
+top_2w_2r_unit_test.genblk1[1].accounter_insts.cells_collision[7:0]
+@420
+top_2w_2r_unit_test.genblk1[1].accounter_insts.cix
+@28
+top_2w_2r_unit_test.genblk1[1].accounter_insts.rdaddr[2:0]
 top_2w_2r_unit_test.genblk1[1].accounter_insts.rden
+@420
+top_2w_2r_unit_test.genblk1[1].accounter_insts.wix
 @22
-top_2w_2r_unit_test.genblk1[1].accounter_insts.rdaddr[7:0]
+top_2w_2r_unit_test.genblk1[1].accounter_insts.wraddr[5:0]
 @28
-top_2w_2r_unit_test.genblk1[1].accounter_insts.rdselect
+top_2w_2r_unit_test.genblk1[1].accounter_insts.wren[1:0]
+@1401200
+-accounter1
+@c00200
+-readswitch
+@22
+rs_inst.bank_select[3:0]
+@28
+rs_inst.s_rden[1:0]
+@22
+rs_inst.s_rdaddr[5:0]
+rs_inst.s_rddata[15:0]
+@28
+rs_inst.m_rden[1:0]
+@22
+rs_inst.m_rdaddr[5:0]
+rs_inst.m_rddata[15:0]
+rs_inst.m_rdcollision[3:0]
+@1401200
+-readswitch
 @800200
--read_sw
+-BRAM 0
+@28
+top_2w_2r_unit_test.dut.bb_inst.RAMS_INST[0].bank_inst.rdclk
+top_2w_2r_unit_test.dut.bb_inst.RAMS_INST[0].bank_inst.rden
+top_2w_2r_unit_test.dut.bb_inst.RAMS_INST[0].bank_inst.rdaddr[2:0]
+@22
+top_2w_2r_unit_test.dut.bb_inst.RAMS_INST[0].bank_inst.rddata[7:0]
+@28
+top_2w_2r_unit_test.dut.bb_inst.RAMS_INST[0].bank_inst.wrclk
+top_2w_2r_unit_test.dut.bb_inst.RAMS_INST[0].bank_inst.wren
+top_2w_2r_unit_test.dut.bb_inst.RAMS_INST[0].bank_inst.wraddr[2:0]
+@22
+top_2w_2r_unit_test.dut.bb_inst.RAMS_INST[0].bank_inst.wrdata[7:0]
 @1000200
--read_sw
+-BRAM 0
+@800200
+-RAM 1
+@28
+top_2w_2r_unit_test.dut.bb_inst.RAMS_INST[1].bank_inst.rdclk
+top_2w_2r_unit_test.dut.bb_inst.RAMS_INST[1].bank_inst.rden
+top_2w_2r_unit_test.dut.bb_inst.RAMS_INST[1].bank_inst.rdaddr[2:0]
+@22
+top_2w_2r_unit_test.dut.bb_inst.RAMS_INST[1].bank_inst.rddata[7:0]
+@28
+top_2w_2r_unit_test.dut.bb_inst.RAMS_INST[1].bank_inst.wrclk
+@29
+top_2w_2r_unit_test.dut.bb_inst.RAMS_INST[1].bank_inst.wren
+@28
+top_2w_2r_unit_test.dut.bb_inst.RAMS_INST[1].bank_inst.wraddr[2:0]
+@22
+top_2w_2r_unit_test.dut.bb_inst.RAMS_INST[1].bank_inst.wrdata[7:0]
+@1000200
+-RAM 1
 [pattern_trace] 1
 [pattern_trace] 0

@@ -7,14 +7,18 @@ module top_2w_2r_unit_test;
 
     `SVUT_SETUP
 
-    parameter ADDR_WIDTH = 8;
+    parameter ADDR_WIDTH = 3;
     parameter RAM_DEPTH = 2**ADDR_WIDTH;
-    parameter DATA_WIDTH = 32;
+    parameter DATA_WIDTH = 8;
 
     parameter ALL = 0;
     parameter AGENT1 = 1;
     parameter AGENT2 = 2;
     parameter MAX_TEST_RUN = 4;
+    // Enable write collision support
+    parameter WRITE_COLLISION = 1;
+    // Enable read collision support
+    parameter READ_COLLISION = 1;
 
     reg                   aclk;
     reg                   aresetn;
@@ -27,13 +31,18 @@ module top_2w_2r_unit_test;
     reg                   rden1;
     reg  [ADDR_WIDTH-1:0] rdaddr1;
     wire [DATA_WIDTH-1:0] rddata1;
+    wire [2         -1:0] rdcollision1;
     reg                   rden2;
     reg  [ADDR_WIDTH-1:0] rdaddr2;
     wire [DATA_WIDTH-1:0] rddata2;
+    wire [2         -1:0] rdcollision2;
 
     integer               request;
     integer               request1;
     integer               request2;
+    integer               collision;
+    integer               collision1;
+    integer               collision2;
 
     `include "functions.sv"
 
@@ -41,7 +50,9 @@ module top_2w_2r_unit_test;
     #(
     ADDR_WIDTH,
     RAM_DEPTH,
-    DATA_WIDTH
+    DATA_WIDTH,
+    WRITE_COLLISION,
+    READ_COLLISION
     )
     dut
     (
@@ -56,9 +67,11 @@ module top_2w_2r_unit_test;
     rden1,
     rdaddr1,
     rddata1,
+    rdcollision1,
     rden2,
     rdaddr2,
-    rddata2
+    rddata2,
+    rdcollision2
     );
 
     initial aclk = 0;

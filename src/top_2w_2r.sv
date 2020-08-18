@@ -13,7 +13,11 @@ module top
         // RAM depth
         parameter RAM_DEPTH = 2**ADDR_WIDTH,
         // Data Width in bits
-        parameter DATA_WIDTH = 32
+        parameter DATA_WIDTH = 32,
+        // Enable write collision support
+        parameter WRITE_COLLISION = 1,
+        // Enable read collision support
+        parameter READ_COLLISION = 1
     )(
         input  wire                  aclk,
         input  wire                  aresetn,
@@ -26,16 +30,21 @@ module top
         input  wire                  rden1,
         input  wire [ADDR_WIDTH-1:0] rdaddr1,
         output wire [DATA_WIDTH-1:0] rddata1,
+        output wire [2         -1:0] rdcollision1,
         input  wire                  rden2,
         input  wire [ADDR_WIDTH-1:0] rdaddr2,
-        output wire [DATA_WIDTH-1:0] rddata2
+        output wire [DATA_WIDTH-1:0] rddata2,
+        output wire [2         -1:0] rdcollision2
     );
 
     initial $dumpvars(0, top);
 
     localparam NB_WRAGENT   = 2;
     localparam NB_RDAGENT   = 2;
-    localparam SELECT_WIDTH = NB_WRAGENT == 1 ? 1 : $clog2(NB_WRAGENT);
+    // Width of the read selector to use output mux
+    localparam SELECT_WIDTH = NB_WRAGENT == 1 ?
+                              1 + WRITE_COLLISION :
+                              $clog2(NB_WRAGENT) + WRITE_COLLISION;
 
     // Interconnections on write sides of the bram banks
     wire [             NB_WRAGENT-1:0] wren;
@@ -44,12 +53,13 @@ module top
     wire [             NB_RDAGENT-1:0] rden;
     wire [  NB_RDAGENT*ADDR_WIDTH-1:0] rdaddr;
     wire [  NB_RDAGENT*DATA_WIDTH-1:0] rddata;
-    wire [NB_RDAGENT*SELECT_WIDTH-1:0] rdselect;
+    wire [NB_RDAGENT*SELECT_WIDTH-1:0] bank_select;
 
     // Interconnections on read sides of the bram banks
     wire [             NB_WRAGENT-1:0] s_rden;
     wire [  NB_WRAGENT*ADDR_WIDTH-1:0] s_rdaddr;
     wire [  NB_WRAGENT*DATA_WIDTH-1:0] s_rddata;
+    wire [           NB_RDAGENT*2-1:0] m_rdcollision;
 
     assign wren[0] = wren1;
     assign wren[1] = wren2;
@@ -64,22 +74,25 @@ module top
     assign rdaddr[ADDR_WIDTH+:ADDR_WIDTH] = rdaddr2;
     assign rddata1 = rddata[0+:DATA_WIDTH];
     assign rddata2 = rddata[DATA_WIDTH+:DATA_WIDTH];
+    assign rdcollision1 = m_rdcollision[0+:2];
+    assign rdcollision2 = m_rdcollision[2+:2];
 
     MemoryMapAccounter
     #(
-        .ADDR_WIDTH   (ADDR_WIDTH),
-        .RAM_DEPTH    (RAM_DEPTH),
-        .NB_WRAGENT   (NB_WRAGENT),
-        .NB_RDAGENT   (NB_RDAGENT),
-        .SELECT_WIDTH (SELECT_WIDTH)
+        .ADDR_WIDTH        (ADDR_WIDTH),
+        .RAM_DEPTH         (RAM_DEPTH),
+        .NB_WRAGENT        (NB_WRAGENT),
+        .NB_RDAGENT        (NB_RDAGENT),
+        .WRITE_COLLISION   (WRITE_COLLISION),
+        .SELECT_WIDTH      (SELECT_WIDTH)
     ) mma_inst (
-        .aclk       (aclk),
-        .aresetn    (aresetn),
-        .wren       (wren),
-        .wraddr     (wraddr),
-        .rden       (rden),
-        .rdaddr     (rdaddr),
-        .rdselect   (rdselect)
+        .aclk        (aclk),
+        .aresetn     (aresetn),
+        .wren        (wren),
+        .wraddr      (wraddr),
+        .rden        (rden),
+        .rdaddr      (rdaddr),
+        .bank_select (bank_select)
     );
 
     BramBank
@@ -101,21 +114,24 @@ module top
 
     ReadSwitch
     #(
-        .ADDR_WIDTH   (ADDR_WIDTH),
-        .DATA_WIDTH   (DATA_WIDTH),
-        .NB_WRAGENT   (NB_WRAGENT),
-        .NB_RDAGENT   (NB_RDAGENT),
-        .SELECT_WIDTH (SELECT_WIDTH)
+        .ADDR_WIDTH       (ADDR_WIDTH),
+        .DATA_WIDTH       (DATA_WIDTH),
+        .NB_WRAGENT       (NB_WRAGENT),
+        .NB_RDAGENT       (NB_RDAGENT),
+        .WRITE_COLLISION  (WRITE_COLLISION),
+        .READ_COLLISION   (READ_COLLISION),
+        .SELECT_WIDTH     (SELECT_WIDTH)
     ) rs_inst (
-        .aclk     (aclk    ),
-        .aresetn  (aresetn ),
-        .s_rden   (s_rden  ),
-        .s_rdaddr (s_rdaddr),
-        .s_rddata (s_rddata),
-        .rdselect (rdselect),
-        .m_rden   (rden  ),
-        .m_rdaddr (rdaddr),
-        .m_rddata (rddata)
+        .aclk           (aclk),
+        .aresetn        (aresetn),
+        .s_rden         (s_rden),
+        .s_rdaddr       (s_rdaddr),
+        .s_rddata       (s_rddata),
+        .bank_select    (bank_select),
+        .m_rden         (rden),
+        .m_rdaddr       (rdaddr),
+        .m_rddata       (rddata),
+        .m_rdcollision  (m_rdcollision)
     );
 
 endmodule

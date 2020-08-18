@@ -22,8 +22,12 @@ module Accounter
         parameter NB_WRAGENT = 2,
         // Number of read agent
         parameter NB_RDAGENT = 2,
+        // Enable write collision support
+        parameter WRITE_COLLISION = 1,
         // Width of the read selector to use output mux
-        parameter SELECT_WIDTH = NB_WRAGENT == 1 ? 1 : $clog2(NB_WRAGENT)
+        parameter SELECT_WIDTH = NB_WRAGENT == 1 ?
+                                 1 + WRITE_COLLISION :
+                                 $clog2(NB_WRAGENT) + WRITE_COLLISION
     )(
         input  wire                             aclk,
         input  wire                             aresetn,
@@ -31,10 +35,29 @@ module Accounter
         input  wire [NB_WRAGENT*ADDR_WIDTH-1:0] wraddr,
         input  wire                             rden,
         input  wire [           ADDR_WIDTH-1:0] rdaddr,
-        output wire [         SELECT_WIDTH-1:0] rdselect
+        output wire [         SELECT_WIDTH-1:0] bank_select
     );
 
     logic [SELECT_WIDTH*RAM_DEPTH-1:0] cells;
+    logic [             RAM_DEPTH-1:0] cells_collision;
+
+    generate if (WRITE_COLLISION) begin
+        genvar cix;
+        for (cix=0;cix<RAM_DEPTH; cix=cix+1) begin
+            write_collision #(
+                .ADDR_WIDTH     (ADDR_WIDTH),
+                .NB_WRAGENT     (NB_WRAGENT)
+            ) collision_inst (
+                .aclk       (aclk),
+                .aresetn    (aresetn),
+                .cell_addr  (cix[ADDR_WIDTH-1:0]),
+                .wren       (wren),
+                .wraddr     (wraddr),
+                .collision  (cells_collision[cix])
+            );
+        end
+    end
+    endgenerate
 
     // Write monitoring to store for each row the last agent
     // which updated the address
@@ -51,13 +74,16 @@ module Accounter
                         wraddr[ADDR_WIDTH*wix+:ADDR_WIDTH] == cix[ADDR_WIDTH-1:0])
                         // Assign into the cells the write agent index
                         // if its address matches the cell index
-                        cells[SELECT_WIDTH*cix+:SELECT_WIDTH] <= wix[SELECT_WIDTH-1:0];
+                        if (WRITE_COLLISION)
+                            cells[SELECT_WIDTH*cix+:SELECT_WIDTH] <= {cells_collision[cix], wix[SELECT_WIDTH-2:0]};
+                        else
+                            cells[SELECT_WIDTH*cix+:SELECT_WIDTH] <= wix[SELECT_WIDTH-1:0];
                 end
             end
         end
     end
-    // Drives rdselect with last agent index.
-    assign rdselect = cells[SELECT_WIDTH*rdaddr+:SELECT_WIDTH];
+    // Drives bank_select with last agent index.
+    assign bank_select = cells[SELECT_WIDTH*rdaddr+:SELECT_WIDTH];
 
 endmodule
 
