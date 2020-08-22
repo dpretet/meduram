@@ -74,8 +74,9 @@ endtask
 
 /// Task to read a memory address with a specific agent
 task readAgent(input integer agent, input integer addr, 
-               output integer value, output collision);
+               output integer value, output integer collision);
 begin
+
     `ifdef VERBOSE
         string msg;
         $sformat(msg, "Read access start with agent %0d", agent);
@@ -101,14 +102,17 @@ begin
     @ (negedge aclk);
     if (agent == AGENT1) begin
         value = rddata1;
-        collision = collision1;
+        collision = rdcollision1;
     end
     if (agent == AGENT2) begin
         value = rddata2;
-        collision = collision2;
+        collision = rdcollision2;
     end
+
     `ifdef VERBOSE
         $sformat(msg, "Value read: %x", value);
+        `INFO(msg);
+        $sformat(msg, "Collision flag: %x", collision);
         `INFO(msg);
         `INFO("Read access done");
     `endif
@@ -120,6 +124,7 @@ task readBothAgents(input integer addr,
     output integer data1, output integer data2,
     output integer collision1, output integer collision2);
 begin
+
     `ifdef VERBOSE
         string msg;
         $sformat(msg, "Read access start with both agents");
@@ -140,13 +145,15 @@ begin
     @ (negedge aclk);
     data1 = rddata1;
     data2 = rddata2;
-    collision1 = collision1;
-    collision2 = collision2;
+    collision1 = rdcollision1;
+    collision2 = rdcollision2;
+
     `ifdef VERBOSE
         `INFO("Read access done");
     `endif
 end
 endtask
+
 /// get a random agent index
 function integer pickRandomAgent();
     integer ix;

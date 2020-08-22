@@ -31,11 +31,11 @@ module top_2w_2r_unit_test;
     reg                   rden1;
     reg  [ADDR_WIDTH-1:0] rdaddr1;
     wire [DATA_WIDTH-1:0] rddata1;
-    wire [2         -1:0] rdcollision1;
+    wire [           1:0] rdcollision1;
     reg                   rden2;
     reg  [ADDR_WIDTH-1:0] rdaddr2;
     wire [DATA_WIDTH-1:0] rddata2;
-    wire [2         -1:0] rdcollision2;
+    wire [           1:0] rdcollision2;
 
     integer               request;
     integer               request1;
@@ -92,6 +92,7 @@ module top_2w_2r_unit_test;
         rdaddr2 = {ADDR_WIDTH{1'b0}};
         # 10;
         aresetn = 1'b1;
+        repeat (4) @ (posedge aclk);
     end
     endtask
 
@@ -101,6 +102,7 @@ module top_2w_2r_unit_test;
         wren2 = 1'b0;
         rden1 = 1'b0;
         rden2 = 1'b0;
+        repeat (4) @ (posedge aclk);
     end
     endtask
 

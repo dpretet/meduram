@@ -16,7 +16,7 @@
             readAgent(AGENT1, addr, request, collision);
             `ASSERT((request !== value1));
             `ASSERT((request === value2));
-            `ASSERT(collision);
+            `ASSERT((collision === 1));
         end
 
     `UNIT_TEST_END
@@ -25,6 +25,7 @@
 
         `INFO("Both write agent write the same address.");
         `INFO("Only agent 2 should write its data.");
+        `INFO("Should detect a write collision on first read, then not on second");
 
         for (int round=0; round<MAX_TEST_RUN; round=round+1) begin
             logic [ADDR_WIDTH-1:0] addr;
@@ -41,7 +42,7 @@
             writeAgent(AGENT1, addr, value1);
             readAgent(AGENT1, addr, request, collision);
             `ASSERT((request === value1));
-            `ASSERT((~collision));
+            `ASSERT((collision === 0));
         end
 
     `UNIT_TEST_END
@@ -83,6 +84,8 @@
             readBothAgents(addr, request1, request2, collision1, collision2);
             `ASSERT((value1 === request1));
             `ASSERT((value2 !== request2));
+            `ASSERT((collision1 === 2));
+            `ASSERT((collision2 === 2));
         end
 
     `UNIT_TEST_END

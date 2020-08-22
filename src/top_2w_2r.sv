@@ -5,6 +5,12 @@
 `timescale 1 ns / 100 ps
 `default_nettype none
 
+`define assert(condition, msg)\
+    if(condition) begin\
+        $display("\033[1;31mERROR: %s\033[0m", msg);\
+        $finish(1);\
+    end
+
 module top
 
     #(
@@ -36,6 +42,11 @@ module top
         output wire [DATA_WIDTH-1:0] rddata2,
         output wire [2         -1:0] rdcollision2
     );
+    
+    initial begin
+        `assert(WRITE_COLLISION > 1, "WRITE_COLLISION can be bigger than 1");
+        `assert(READ_COLLISION > 1, "READ_COLLISION can be bigger than 1");
+    end
 
     initial $dumpvars(0, top);
 

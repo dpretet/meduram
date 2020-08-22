@@ -19,9 +19,8 @@ by Charles Eric LaForest and J. Gregory Steffan.
 
 ## Documentation
 
-[Introduction](doc/introduction.md)
-[Read and write collision](doc/rw_collision.md)
-[Parameters & Interface](doc/param_itfs.md)
+- [Read and write collision](doc/rw_collision.md)
+- [Parameters & Interface](doc/param_itfs.md)
 
 ## License
 

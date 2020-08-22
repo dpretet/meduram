@@ -42,16 +42,18 @@ module ReadSwitch
 
     genvar wrid, rdid;
 
-    // Paramter to select the effective bank to select while MSB of bank select
-    // determine if a write collision occured.  Mostly used in this module to
+    // Parameter to select the right bank while MSB of bank_select
+    // determine if a write collision occured. Mostly used in this module to
     // avoid cofusion when reading code and make it straight forward whatever
     // the collision mode activated.
     localparam SELECT_RANGE = WRITE_COLLISION ? 
                               SELECT_WIDTH-1 : SELECT_WIDTH;
 
-    // This function used into the address switching circuit returns
-    // the agent allowed to read a BRAM bank. The highest index
-    // is the selected one when multiple agents try a concurrent access
+    //-------------------------------------------------------------------------
+    // This function used into the address switching circuit returns the agent
+    // allowed to read a BRAM bank. The highest index is the selected one when
+    // multiple agents try a concurrent access
+    //-------------------------------------------------------------------------
     function [SELECT_RANGE:0] selectAgent;
 
         input [           SELECT_RANGE-1:0] idx; // Agent id
@@ -68,7 +70,6 @@ module ReadSwitch
                 // we can't be sure it's not the default value 0.
                 selectAgent = {1'b1, i[SELECT_RANGE-1:0]};
         end
-
     endfunction
 
     //-------------------------------------------------------------------------
@@ -100,6 +101,23 @@ module ReadSwitch
     for (rdid=0; rdid<NB_RDAGENT; rdid=rdid+1) begin : DATA_SWITCHS
 
         logic [SELECT_WIDTH-1:0] dataSel;
+        logic rdcollision;
+
+        // Instance detecting which read agents access the same
+        // memory bank at the same time
+        ReadCollision #(
+            NB_RDAGENT,
+            WRITE_COLLISION,
+            SELECT_WIDTH, 
+            SELECT_RANGE
+        ) collision_inst (
+            aclk, 
+            aresetn, 
+            rdid[$clog2(NB_RDAGENT)-1:0],
+            bank_select, 
+            m_rden, 
+            rdcollision
+        );
 
         // Pipeline the selector while BRAM banks uses a FFDed output
         always @ (posedge aclk or negedge aresetn) begin
@@ -108,7 +126,7 @@ module ReadSwitch
             else
                 // Select the bank select range associated to the read agent
                 // and shrink up the bank index, thus remove the collision flag
-                dataSel <= bank_select[SELECT_WIDTH*rdid+:SELECT_RANGE];
+                dataSel <= bank_select[SELECT_WIDTH*rdid+:SELECT_WIDTH];
         end
 
         // Simply select the part to transmit to the agent.
@@ -123,7 +141,7 @@ module ReadSwitch
 
         // Bit 1 propagates read collision flag
         if (READ_COLLISION)
-            assign m_rdcollision[rdid*2+1] = 1'b0;
+            assign m_rdcollision[rdid*2+1] = rdcollision;
         else
             assign m_rdcollision[rdid*2+1] = 1'b0;
     end
