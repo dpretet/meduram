@@ -14,8 +14,8 @@
             value2 = $urandom();
             writeBothAgents(addr, value1, value2);
             readAgent(AGENT1, addr, request, collision);
-            `ASSERT((request !== value1));
-            `ASSERT((request === value2));
+            `ASSERT((request === value1));
+            `ASSERT((request !== value2));
             `ASSERT((collision === 1));
         end
 
@@ -36,8 +36,8 @@
             value2 = $urandom();
             writeBothAgents(addr, value1, value2);
             readAgent(AGENT1, addr, request, collision);
-            `ASSERT((request !== value1));
-            `ASSERT((request === value2));
+            `ASSERT((request === value1));
+            `ASSERT((request !== value2));
             `ASSERT(collision);
             writeAgent(AGENT1, addr, value1);
             readAgent(AGENT1, addr, request, collision);
