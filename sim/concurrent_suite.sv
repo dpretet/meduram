@@ -62,6 +62,8 @@
             readBothAgents(addr, request1, request2, collision1, collision2);
             `ASSERT((value === request1));
             `ASSERT((value === request2));
+            `ASSERT((collision1 === 2));
+            `ASSERT((collision2 === 2));
         end
 
     `UNIT_TEST_END

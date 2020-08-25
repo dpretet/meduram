@@ -97,7 +97,7 @@ main() {
 
     if [[ $1 == "syn" ]]; then
         cd "$MEDUDIR/syn"
-        yosys top_2w_2r.ys
+        ./run.sh
         return $?
     fi
 }

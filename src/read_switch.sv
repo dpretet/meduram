@@ -2,7 +2,7 @@
 // Distributed under the MIT License
 // https://opensource.org/licenses/mit-license.php
 
-// This module aims to switch the different banks' output 
+// This module aims to switch the different banks' output
 // and drives them to the read agents.
 
 `timescale 1 ns / 100 ps
@@ -24,8 +24,8 @@ module ReadSwitch
         // Enable read collision support
         parameter READ_COLLISION = 1,
         // Width of the read selector to use output mux
-        parameter SELECT_WIDTH = NB_WRAGENT == 1 ? 
-                                 1 + WRITE_COLLISION : 
+        parameter SELECT_WIDTH = NB_WRAGENT == 1 ?
+                                 1 + WRITE_COLLISION :
                                  $clog2(NB_WRAGENT) + WRITE_COLLISION
     )(
         input  wire                               aclk,
@@ -46,7 +46,7 @@ module ReadSwitch
     // determine if a write collision occured. Mostly used in this module to
     // avoid cofusion when reading code and make it straight forward whatever
     // the collision mode activated.
-    localparam SELECT_RANGE = WRITE_COLLISION ? 
+    localparam SELECT_RANGE = WRITE_COLLISION ?
                               SELECT_WIDTH-1 : SELECT_WIDTH;
 
     //-------------------------------------------------------------------------
@@ -58,17 +58,52 @@ module ReadSwitch
 
         input [           SELECT_RANGE-1:0] idx; // Agent id
         input [             NB_RDAGENT-1:0] en; // Enable gathered
-        input [NB_RDAGENT*SELECT_RANGE-1:0] select; // Select gathered 
+        input [NB_RDAGENT*SELECT_RANGE-1:0] select; // Select gathered
 
         selectAgent = {SELECT_RANGE+1{1'b0}};
 
-        for (int i=0;i<NB_RDAGENT;i=i+1) begin
+        // Assert MSB to signify an agent has been selected. Else
+        // we can't be sure it's not the default value 0.
+        //
+        if (NB_RDAGENT == 1) begin
+            if (en[0] == 1'b1 &&
+                select[SELECT_RANGE*0+:SELECT_RANGE] == idx[SELECT_RANGE-1:0])
+                selectAgent = {1'b1, 1'b0};
 
-            if (en[i] == 1'b1 && 
-                select[SELECT_RANGE*i+:SELECT_RANGE] == idx[SELECT_RANGE-1:0])
-                // Assert MSB to signify an agent has been selected. Else
-                // we can't be sure it's not the default value 0.
-                selectAgent = {1'b1, i[SELECT_RANGE-1:0]};
+        end else if (NB_RDAGENT == 2) begin
+            if (en[0] == 1'b1 &&
+                select[SELECT_RANGE*0+:SELECT_RANGE] == idx[SELECT_RANGE-1:0])
+                selectAgent = {1'b1, 1'b0};
+            else if (en[1] == 1'b1 &&
+                select[SELECT_RANGE*1+:SELECT_RANGE] == idx[SELECT_RANGE-1:0])
+                selectAgent = {1'b1, 1'b1};
+
+        end else if (NB_RDAGENT == 3) begin
+
+            if (en[0] == 1'b1 &&
+                select[SELECT_RANGE*0+:SELECT_RANGE] == idx[SELECT_RANGE-1:0])
+                selectAgent = {1'b1, 2'b0};
+            else if (en[1] == 1'b1 &&
+                select[SELECT_RANGE*1+:SELECT_RANGE] == idx[SELECT_RANGE-1:0])
+                selectAgent = {1'b1, 2'b1};
+            else if (en[2] == 1'b1 &&
+                select[SELECT_RANGE*2+:SELECT_RANGE] == idx[SELECT_RANGE-1:0])
+                selectAgent = {1'b1, 2'b10};
+
+        end else if (NB_RDAGENT == 4) begin
+
+            if (en[0] == 1'b1 &&
+                select[SELECT_RANGE*0+:SELECT_RANGE] == idx[SELECT_RANGE-1:0])
+                selectAgent = {1'b1, 2'b0};
+            else if (en[1] == 1'b1 &&
+                select[SELECT_RANGE*1+:SELECT_RANGE] == idx[SELECT_RANGE-1:0])
+                selectAgent = {1'b1, 2'b1};
+            else if (en[2] == 1'b1 &&
+                select[SELECT_RANGE*2+:SELECT_RANGE] == idx[SELECT_RANGE-1:0])
+                selectAgent = {1'b1, 2'b10};
+            else if (en[3] == 1'b1 &&
+                select[SELECT_RANGE*3+:SELECT_RANGE] == idx[SELECT_RANGE-1:0])
+                selectAgent = {1'b1, 2'b11};
         end
     endfunction
 
@@ -87,10 +122,10 @@ module ReadSwitch
         assign agtSel = selectAgent(wrid, m_rden, bank_select[0+:SELECT_RANGE]);
 
         // Switch enable and address. Enable only if is really selected
-        assign s_rden[wrid] = agtSel[SELECT_RANGE] & 
+        assign s_rden[wrid] = agtSel[SELECT_RANGE] &
                               m_rden[agtSel[SELECT_RANGE-1:0]];
 
-        assign s_rdaddr[ADDR_WIDTH*wrid+:ADDR_WIDTH] = 
+        assign s_rdaddr[ADDR_WIDTH*wrid+:ADDR_WIDTH] =
             m_rdaddr[ADDR_WIDTH*agtSel[SELECT_RANGE-1:0]+:ADDR_WIDTH];
     end
 
@@ -108,14 +143,14 @@ module ReadSwitch
         ReadCollision #(
             NB_RDAGENT,
             WRITE_COLLISION,
-            SELECT_WIDTH, 
+            SELECT_WIDTH,
             SELECT_RANGE
         ) collision_inst (
-            aclk, 
-            aresetn, 
+            aclk,
+            aresetn,
             rdid[$clog2(NB_RDAGENT)-1:0],
-            bank_select, 
-            m_rden, 
+            bank_select,
+            m_rden,
             rdcollision
         );
 
@@ -130,13 +165,13 @@ module ReadSwitch
         end
 
         // Simply select the part to transmit to the agent.
-        assign m_rddata[DATA_WIDTH*rdid+:DATA_WIDTH] = 
+        assign m_rddata[DATA_WIDTH*rdid+:DATA_WIDTH] =
             s_rddata[DATA_WIDTH*dataSel[SELECT_RANGE-1:0]+:DATA_WIDTH];
 
         // Bit 0 propagates write collision flag
-        if (WRITE_COLLISION) 
+        if (WRITE_COLLISION)
             assign m_rdcollision[rdid*2+0] = dataSel[SELECT_WIDTH-1];
-        else 
+        else
             assign m_rdcollision[rdid*2+0] = 1'b0;
 
         // Bit 1 propagates read collision flag

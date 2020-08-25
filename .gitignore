@@ -134,3 +134,5 @@ TODO.md
 dump.vcd
 *.out
 svut_h.sv
+syn/synth.v
+syn/vsclib013.lib

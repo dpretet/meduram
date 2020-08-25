@@ -86,9 +86,11 @@ module Accounter
     genvar cix;
     generate
     for (cix=0;cix<RAM_DEPTH;cix=cix+1) begin
+
         always @ (posedge aclk or negedge aresetn) begin
+
             if (aresetn == 1'b0) begin
-                cells <= {SELECT_WIDTH*RAM_DEPTH{1'b0}};
+                cells[SELECT_WIDTH*cix+:SELECT_WIDTH] <= {SELECT_WIDTH{1'b0}};
             end else begin
                 // Parse all active write agents and store into the cell
                 // the one accessing the memory row. Write collision are not

@@ -15,7 +15,7 @@ module top
 
     #(
         // Addr Width in bits
-        parameter ADDR_WIDTH = 8,
+        parameter ADDR_WIDTH = 3,
         // RAM depth
         parameter RAM_DEPTH = 2**ADDR_WIDTH,
         // Data Width in bits
@@ -42,10 +42,11 @@ module top
         output wire [DATA_WIDTH-1:0] rddata2,
         output wire [2         -1:0] rdcollision2
     );
-    
+
     initial begin
         `assert(WRITE_COLLISION > 1, "WRITE_COLLISION can be bigger than 1");
         `assert(READ_COLLISION > 1, "READ_COLLISION can be bigger than 1");
+        `assert((NB_RDAGENT == 1 && READ_COLLISION > 0), "READ can be activated if only one read agent is used");
     end
 
     initial $dumpvars(0, top);
