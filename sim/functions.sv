@@ -154,6 +154,41 @@ begin
 end
 endtask
 
+/// Task to read a memory address with both agents, same addr
+task readConcurrentAgents(input integer addr1, input integer addr2, 
+    output integer data1, output integer data2,
+    output integer collision1, output integer collision2);
+begin
+
+    `ifdef VERBOSE
+        string msg;
+        $sformat(msg, "Read access start with agents on different address");
+        `INFO(msg);
+    `endif
+
+    // Wait for posedge and write a data into memory
+    @ (posedge aclk);
+    rden1 = 1'b1;
+    rdaddr1 = addr1;
+    rden2 = 1'b1;
+    rdaddr2 = addr2;
+
+    // Deassert the xfer after one cycle
+    @ (posedge aclk);
+    rden1 = 1'b0;
+    rden2 = 1'b0;
+    @ (negedge aclk);
+    data1 = rddata1;
+    data2 = rddata2;
+    collision1 = rdcollision1;
+    collision2 = rdcollision2;
+
+    `ifdef VERBOSE
+        `INFO("Read access done");
+    `endif
+end
+endtask
+
 /// get a random agent index
 function integer pickRandomAgent();
     integer ix;

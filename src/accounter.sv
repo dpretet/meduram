@@ -59,30 +59,6 @@ module Accounter
     end
     endgenerate
 
-    // Write monitoring to store for each row the last agent
-    // which updated the address
-//    always @ (posedge aclk or negedge aresetn) begin
-//        if (aresetn == 1'b0) begin
-//            cells <= {SELECT_WIDTH*RAM_DEPTH{1'b0}};
-//        end else begin
-//            // Parse all active write agents and store into the cell
-//            // the one accessing the memory row. Write collision are not
-//            // addressed and last one parsed is considered as the winner.
-//            for (int cix=0;cix<RAM_DEPTH;cix=cix+1) begin
-//                for (int wix=0;wix<NB_WRAGENT;wix=wix+1) begin
-//                    if (wren[wix] == 1'b1 &&
-//                        wraddr[ADDR_WIDTH*wix+:ADDR_WIDTH] == cix[ADDR_WIDTH-1:0])
-//                        // Assign into the cells the write agent index
-//                        // if its address matches the cell index
-//                        if (WRITE_COLLISION)
-//                            cells[SELECT_WIDTH*cix+:SELECT_WIDTH] <= {cells_collision[cix], wix[SELECT_WIDTH-2:0]};
-//                        else
-//                            cells[SELECT_WIDTH*cix+:SELECT_WIDTH] <= wix[SELECT_WIDTH-1:0];
-//                end
-//            end
-//        end
-//    end
-
     genvar cix;
     generate
     for (cix=0;cix<RAM_DEPTH;cix=cix+1) begin

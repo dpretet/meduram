@@ -113,17 +113,6 @@ module ReadCollision
         end
     end
 
-    // Original code before refactoring to pass Yosys synthesis
-    // for (int i=0; i<NB_RDAGENT; i=i+1) begin
-        // if (i != rdid) begin
-            // if (m_rden[i] && 
-                // bank_select[i*SELECT_WIDTH+:SELECT_RANGE] == bank_select[rdid*SELECT_WIDTH+:SELECT_RANGE])
-                // collisions[i] <= 1'b1;
-        // end else begin
-            // collisions[i] <= 1'b0;
-        // end
-    // end
-
     assign collision = |collisions;
 
 endmodule

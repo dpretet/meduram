@@ -1,26 +1,38 @@
-# read design
-read_verilog -sv ../src/bram.sv
-read_verilog -sv ../src/bram_bank.sv
-read_verilog -sv ../src/accounter.sv
-read_verilog -sv ../src/mem_map_accounter.sv
-read_verilog -sv ../src/read_switch.sv
-read_verilog -sv ../src/write_collision.sv
-read_verilog -sv ../src/read_collision.sv
-read_verilog -sv ../src/top_2w_2r.sv
-
+# read design modules
+read -sv ../src/bram.sv
+read -sv ../src/bram_bank.sv
+read -sv ../src/accounter.sv
+read -sv ../src/mem_map_accounter.sv
+read -sv ../src/read_switch.sv
+read -sv ../src/write_collision.sv
+read -sv ../src/read_collision.sv
+read -sv ../src/top_2w_2r.sv
 
 # elaborate design hierarchy
 hierarchy -check -top top
 
-# the high-level stuff
-proc; opt ; fsm; opt; memory; opt
-# mapping to internal cell library
+# The synthesis flow:
+
+# opt called after all commands: series of trivial optimizations and cleanups
+
+# convert high-level behavioral parts ("processes")
+# to d-type flip-flops and muxes
+proc; opt;
+
+# Performs FSM extraction and optimization
+fsm; opt;
+
+# convert high-level memory constructs to d-type flip-flops
+# and multiplexers
+memory; opt
+
+# convert design to (logical) gate-level netlists
 techmap; opt
 
-# mapping flip-flops to vsclib013
+# map internal register types to the ones from the cell library
 dfflibmap -liberty vsclib013.lib
 
-# mapping logic to vsclib013
+# use ABC to map remaining logic to cells from the cell library
 abc -liberty vsclib013.lib
 
 # cleanup
