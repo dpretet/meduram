@@ -46,7 +46,7 @@ module top
     initial begin
         `assert(WRITE_COLLISION > 1, "WRITE_COLLISION can be bigger than 1");
         `assert(READ_COLLISION > 1, "READ_COLLISION can be bigger than 1");
-        `assert((NB_RDAGENT == 1 && READ_COLLISION > 0), "READ can be activated if only one read agent is used");
+        `assert((NB_RDAGENT == 1 && READ_COLLISION > 0), "READ collision can be activated if only more than one read agent is used");
     end
 
     initial $dumpvars(0, top);

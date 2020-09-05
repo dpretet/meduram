@@ -1,0 +1,45 @@
+CAPI=2:
+
+name : ::meduram:1.0.0
+
+filesets:
+    rtl:
+        files:
+            - src/accounter.sv
+            - src/bram.sv
+            - src/bram_bank.sv
+            - src/mem_map_accounter.sv
+            - src/read_collision.sv
+            - src/read_switch.sv
+            - src/top_2w_2r.sv
+            - src/write_collision.sv
+        file_type : systemVerilogSource
+
+    tb:
+        files:
+            - sim/svut_h.sv : {is_include_file : true}
+            - sim/top_2w_2r_unit_test.sv
+        depend : [vlog_tb_utils]
+
+targets:
+    default:
+        filesets : [rtl]
+    sim:
+        default_tool : icarus
+        filesets : [rtl, tb]
+        tools:
+            icarus:
+                iverilog_options: [-g2012]
+        toplevel : top_2w_2r_unit_test
+
+parameters:
+    USE_VLOG_TB_UTILS:
+        datatype: bool
+        description: Use vlog_tb_utils for VCD and timeout handling
+        paramtype: vlogdefine
+
+provider:
+    name : github
+    user : dpretet
+    repo : meduram
+    version : v1.0.0
