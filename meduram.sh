@@ -89,13 +89,19 @@ main() {
 
     source scripts/setup.sh
 
+    if [[ $1 == "lint" ]]; then
+        printinfo "Start linting"
+        find src -name "*.*" -exec verilator --lint-only {} \;
+    fi
     if [[ $1 == "sim" ]]; then
+        printinfo "Start simulation"
         cd "$MEDUDIR/sim"
         ./run.sh
         return $?
     fi
 
     if [[ $1 == "syn" ]]; then
+        printinfo "Start synthesis"
         cd "$MEDUDIR/syn"
         ./run.sh
         return $?

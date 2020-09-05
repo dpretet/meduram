@@ -35,78 +35,69 @@ module ReadCollision
 
             if (NB_RDAGENT == 1) begin
                 collisions[0] <= 1'b0;
-            end 
+            end
 
             if (NB_RDAGENT == 2) begin
 
-                if (rdid != 0) begin
-                    if (m_rden[0] && 
-                        bank_select[0*SELECT_WIDTH+:SELECT_RANGE] == bank_select[rdid*SELECT_WIDTH+:SELECT_RANGE])
+                if (rdid != 0 && m_rden[0] &&
+                    bank_select[0*SELECT_WIDTH+:SELECT_RANGE] == bank_select[rdid*SELECT_WIDTH+:SELECT_RANGE])
                         collisions[0] <= 1'b1;
-                end else
+                else
                     collisions[0] <= 1'b0;
-                
-                if (rdid != 1) begin
-                    if (m_rden[1] && 
-                        bank_select[1*SELECT_WIDTH+:SELECT_RANGE] == bank_select[rdid*SELECT_WIDTH+:SELECT_RANGE])
+
+                if (rdid != 1 && m_rden[1] &&
+                    bank_select[1*SELECT_WIDTH+:SELECT_RANGE] == bank_select[rdid*SELECT_WIDTH+:SELECT_RANGE])
                         collisions[1] <= 1'b1;
-                end else 
+                else
                     collisions[1] <= 1'b0;
 
-            end 
+            end
 
             if (NB_RDAGENT == 3) begin
 
-                if (rdid != 0) begin
-                    if (m_rden[0] && 
-                        bank_select[0*SELECT_WIDTH+:SELECT_RANGE] == bank_select[rdid*SELECT_WIDTH+:SELECT_RANGE])
+                if (rdid != 0 && m_rden[0] &&
+                    bank_select[0*SELECT_WIDTH+:SELECT_RANGE] == bank_select[rdid*SELECT_WIDTH+:SELECT_RANGE])
                         collisions[0] <= 1'b1;
-                end else
+                else
                     collisions[0] <= 1'b0;
-                
-                if (rdid != 1) begin
-                    if (m_rden[1] && 
-                        bank_select[1*SELECT_WIDTH+:SELECT_RANGE] == bank_select[rdid*SELECT_WIDTH+:SELECT_RANGE])
+
+                if (rdid != 1 && m_rden[1] &&
+                    bank_select[1*SELECT_WIDTH+:SELECT_RANGE] == bank_select[rdid*SELECT_WIDTH+:SELECT_RANGE])
                         collisions[1] <= 1'b1;
-                end else 
+                else
                     collisions[1] <= 1'b0;
-                
-                if (rdid != 2) begin
-                    if (m_rden[2] && 
-                        bank_select[2*SELECT_WIDTH+:SELECT_RANGE] == bank_select[rdid*SELECT_WIDTH+:SELECT_RANGE])
+
+                if (rdid != 2 && m_rden[2] &&
+                    bank_select[2*SELECT_WIDTH+:SELECT_RANGE] == bank_select[rdid*SELECT_WIDTH+:SELECT_RANGE])
                         collisions[2] <= 1'b1;
-                end else 
+                else
                     collisions[2] <= 1'b0;
             end
 
             if (NB_RDAGENT == 4) begin
 
-                if (rdid != 0) begin
-                    if (m_rden[0] && 
-                        bank_select[0*SELECT_WIDTH+:SELECT_RANGE] == bank_select[rdid*SELECT_WIDTH+:SELECT_RANGE])
+                if (rdid != 0 && m_rden[0] &&
+                    bank_select[0*SELECT_WIDTH+:SELECT_RANGE] == bank_select[rdid*SELECT_WIDTH+:SELECT_RANGE])
                         collisions[0] <= 1'b1;
-                end else
+                else
                     collisions[0] <= 1'b0;
-                
-                if (rdid != 1) begin
-                    if (m_rden[1] && 
-                        bank_select[1*SELECT_WIDTH+:SELECT_RANGE] == bank_select[rdid*SELECT_WIDTH+:SELECT_RANGE])
+
+                if (rdid != 1 && m_rden[1] &&
+                    bank_select[1*SELECT_WIDTH+:SELECT_RANGE] == bank_select[rdid*SELECT_WIDTH+:SELECT_RANGE])
                         collisions[1] <= 1'b1;
-                end else 
+                else
                     collisions[1] <= 1'b0;
-                
-                if (rdid != 2) begin
-                    if (m_rden[2] && 
-                        bank_select[2*SELECT_WIDTH+:SELECT_RANGE] == bank_select[rdid*SELECT_WIDTH+:SELECT_RANGE])
+
+                if (rdid != 2 && m_rden[2] &&
+                    bank_select[2*SELECT_WIDTH+:SELECT_RANGE] == bank_select[rdid*SELECT_WIDTH+:SELECT_RANGE])
                         collisions[2] <= 1'b1;
-                end else 
+                else
                     collisions[2] <= 1'b0;
-                
-                if (rdid != 3) begin
-                    if (m_rden[3] && 
-                        bank_select[3*SELECT_WIDTH+:SELECT_RANGE] == bank_select[rdid*SELECT_WIDTH+:SELECT_RANGE])
+
+                if (rdid != 3 && m_rden[3] &&
+                    bank_select[3*SELECT_WIDTH+:SELECT_RANGE] == bank_select[rdid*SELECT_WIDTH+:SELECT_RANGE])
                         collisions[3] <= 1'b1;
-                end else 
+                else
                     collisions[3] <= 1'b0;
             end
 

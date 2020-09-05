@@ -1,15 +1,15 @@
 [*]
 [*] GTKWave Analyzer v3.3.103 (w)1999-2019 BSI
-[*] Fri Aug 28 18:33:40 2020
+[*] Sun Aug 30 15:16:59 2020
 [*]
 [dumpfile] "/Users/damien/workspace/hdl/meduram/sim/dump.vcd"
-[dumpfile_mtime] "Fri Aug 28 18:27:59 2020"
-[dumpfile_size] 41818
+[dumpfile_mtime] "Sun Aug 30 15:15:12 2020"
+[dumpfile_size] 85872
 [savefile] "/Users/damien/workspace/hdl/meduram/sim/top_2w_2r.gtkw"
-[timestart] 388500
+[timestart] 0
 [size] 1440 900
 [pos] -1 -1
-*-15.451456 422000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+*-16.451456 86000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 [treeopen] top_2w_2r_unit_test.
 [treeopen] top_2w_2r_unit_test.dut.
 [treeopen] top_2w_2r_unit_test.dut.bb_inst.
@@ -18,11 +18,13 @@
 [treeopen] top_2w_2r_unit_test.dut.mma_inst.
 [treeopen] top_2w_2r_unit_test.dut.mma_inst.genblk1[0].accounter_insts.genblk1.genblk2[0].
 [treeopen] top_2w_2r_unit_test.dut.rs_inst.
+[treeopen] top_2w_2r_unit_test.dut.rs_inst.DATA_SWITCHS[0].
+[treeopen] top_2w_2r_unit_test.dut.rs_inst.DATA_SWITCHS[1].
 [sst_width] 289
 [signals_width] 242
 [sst_expanded] 1
 [sst_vpaned_height] 272
-@c00200
+@800200
 -top
 @28
 top_2w_2r_unit_test.dut.aclk
@@ -37,9 +39,22 @@ top_2w_2r_unit_test.dut.wren2
 top_2w_2r_unit_test.dut.wraddr2[2:0]
 @22
 top_2w_2r_unit_test.dut.wrdata2[7:0]
-@1401200
+@28
+top_2w_2r_unit_test.dut.rden1
+@22
+top_2w_2r_unit_test.dut.rdaddr1[2:0]
+top_2w_2r_unit_test.dut.rddata1[7:0]
+@28
+top_2w_2r_unit_test.dut.rdcollision1[1:0]
+top_2w_2r_unit_test.dut.rden2
+@22
+top_2w_2r_unit_test.dut.rdaddr2[2:0]
+top_2w_2r_unit_test.dut.rddata2[7:0]
+@28
+top_2w_2r_unit_test.dut.rdcollision2[1:0]
+@1000200
 -top
-@c00200
+@800200
 -RAMs
 @200
 -RAMs
@@ -54,29 +69,32 @@ top_2w_2r_unit_test.dut.bb_inst.RAMS_INST[0].bank_inst.wraddr[2:0]
 top_2w_2r_unit_test.dut.bb_inst.RAMS_INST[0].bank_inst.wrdata[7:0]
 @28
 top_2w_2r_unit_test.dut.bb_inst.RAMS_INST[0].bank_inst.rden
-top_2w_2r_unit_test.dut.bb_inst.RAMS_INST[0].bank_inst.rdaddr[2:0]
 @22
+top_2w_2r_unit_test.dut.bb_inst.RAMS_INST[0].bank_inst.rdaddr[2:0]
 top_2w_2r_unit_test.dut.bb_inst.RAMS_INST[0].bank_inst.rddata[7:0]
 @200
 -RAM 1
 @28
 top_2w_2r_unit_test.dut.bb_inst.RAMS_INST[1].bank_inst.wren
-top_2w_2r_unit_test.dut.bb_inst.RAMS_INST[1].bank_inst.wraddr[2:0]
 @22
+top_2w_2r_unit_test.dut.bb_inst.RAMS_INST[1].bank_inst.wraddr[2:0]
 top_2w_2r_unit_test.dut.bb_inst.RAMS_INST[1].bank_inst.wrdata[7:0]
 @28
 top_2w_2r_unit_test.dut.bb_inst.RAMS_INST[1].bank_inst.rden
 top_2w_2r_unit_test.dut.bb_inst.RAMS_INST[1].bank_inst.rdaddr[2:0]
 @22
 top_2w_2r_unit_test.dut.bb_inst.RAMS_INST[1].bank_inst.rddata[7:0]
-@1401200
+@1000200
 -RAMs
-@c00201
+@800200
 -RD Switch
 @200
 -RD Switch
 @28
 top_2w_2r_unit_test.dut.aclk
+top_2w_2r_unit_test.dut.rs_inst.ADDR_SWITCHS[0].selectedAgt[1:0]
+top_2w_2r_unit_test.dut.rs_inst.ADDR_SWITCHS[1].selectedAgt[1:0]
+@29
 top_2w_2r_unit_test.dut.rs_inst.s_rden[1:0]
 @22
 top_2w_2r_unit_test.dut.rs_inst.s_rdaddr[5:0]
@@ -88,6 +106,8 @@ top_2w_2r_unit_test.dut.rs_inst.DATA_SWITCHS[0].rdcollision
 @200
 -output 1
 @28
+top_2w_2r_unit_test.dut.rs_inst.DATA_SWITCHS[0].dataSel[1:0]
+top_2w_2r_unit_test.dut.rs_inst.DATA_SWITCHS[0].rdcollision
 top_2w_2r_unit_test.dut.rden1
 @24
 top_2w_2r_unit_test.dut.rdaddr1[2:0]
@@ -103,6 +123,8 @@ top_2w_2r_unit_test.dut.rdcollision1[1:0]
 @200
 -output 2
 @28
+top_2w_2r_unit_test.dut.rs_inst.DATA_SWITCHS[1].dataSel[1:0]
+top_2w_2r_unit_test.dut.rs_inst.DATA_SWITCHS[1].rdcollision
 top_2w_2r_unit_test.dut.rden2
 @24
 top_2w_2r_unit_test.dut.rdaddr2[2:0]
@@ -115,7 +137,7 @@ top_2w_2r_unit_test.dut.rdcollision2[1:0]
 (1)top_2w_2r_unit_test.dut.rdcollision2[1:0]
 @1401200
 -group_end
-@1401201
+@1000200
 -RD Switch
 [pattern_trace] 1
 [pattern_trace] 0

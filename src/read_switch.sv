@@ -46,63 +46,63 @@ module ReadSwitch
     // determine if a write collision occured. Mostly used in this module to
     // avoid cofusion when reading code and make it straight forward whatever
     // the collision mode activated.
-    localparam SELECT_RANGE = WRITE_COLLISION ?
-                              SELECT_WIDTH-1 : SELECT_WIDTH;
+    localparam DATA_RANGE = WRITE_COLLISION ?
+                            SELECT_WIDTH-1 : SELECT_WIDTH;
 
     //-------------------------------------------------------------------------
     // This function used into the address switching circuit returns the agent
     // allowed to read a BRAM bank. The highest index is the selected one when
     // multiple agents try a concurrent access
     //-------------------------------------------------------------------------
-    function [SELECT_RANGE:0] selectAgent;
+    function [DATA_RANGE:0] selectAgent;
 
-        input [           SELECT_RANGE-1:0] idx; // Agent id
-        input [             NB_RDAGENT-1:0] en; // Enable gathered
-        input [NB_RDAGENT*SELECT_RANGE-1:0] select; // Select gathered
+        input [             DATA_RANGE-1:0] idx;    // Agent id
+        input [             NB_RDAGENT-1:0] en;     // Enable gathered
+        input [NB_RDAGENT*SELECT_WIDTH-1:0] select; // Select gathered
 
-        selectAgent = {SELECT_RANGE+1{1'b0}};
+        selectAgent = {DATA_RANGE+1{1'b0}};
 
         // Assert MSB to signify an agent has been selected. Else
         // we can't be sure it's not the default value 0.
-        //
+
         if (NB_RDAGENT == 1) begin
             if (en[0] == 1'b1 &&
-                select[SELECT_RANGE*0+:SELECT_RANGE] == idx[SELECT_RANGE-1:0])
+                select[SELECT_WIDTH*0+:DATA_RANGE] == idx[DATA_RANGE-1:0])
                 selectAgent = {1'b1, 1'b0};
 
         end else if (NB_RDAGENT == 2) begin
             if (en[0] == 1'b1 &&
-                select[SELECT_RANGE*0+:SELECT_RANGE] == idx[SELECT_RANGE-1:0])
+                select[SELECT_WIDTH*0+:DATA_RANGE] == idx[DATA_RANGE-1:0])
                 selectAgent = {1'b1, 1'b0};
             else if (en[1] == 1'b1 &&
-                select[SELECT_RANGE*1+:SELECT_RANGE] == idx[SELECT_RANGE-1:0])
+                select[SELECT_WIDTH*1+:DATA_RANGE] == idx[DATA_RANGE-1:0])
                 selectAgent = {1'b1, 1'b1};
 
         end else if (NB_RDAGENT == 3) begin
 
             if (en[0] == 1'b1 &&
-                select[SELECT_RANGE*0+:SELECT_RANGE] == idx[SELECT_RANGE-1:0])
+                select[SELECT_WIDTH*0+:DATA_RANGE] == idx[DATA_RANGE-1:0])
                 selectAgent = {1'b1, 2'b0};
             else if (en[1] == 1'b1 &&
-                select[SELECT_RANGE*1+:SELECT_RANGE] == idx[SELECT_RANGE-1:0])
+                select[SELECT_WIDTH*1+:DATA_RANGE] == idx[DATA_RANGE-1:0])
                 selectAgent = {1'b1, 2'b1};
             else if (en[2] == 1'b1 &&
-                select[SELECT_RANGE*2+:SELECT_RANGE] == idx[SELECT_RANGE-1:0])
+                select[SELECT_WIDTH*2+:DATA_RANGE] == idx[DATA_RANGE-1:0])
                 selectAgent = {1'b1, 2'b10};
 
         end else if (NB_RDAGENT == 4) begin
 
             if (en[0] == 1'b1 &&
-                select[SELECT_RANGE*0+:SELECT_RANGE] == idx[SELECT_RANGE-1:0])
+                select[SELECT_WIDTH*0+:DATA_RANGE] == idx[DATA_RANGE-1:0])
                 selectAgent = {1'b1, 2'b0};
             else if (en[1] == 1'b1 &&
-                select[SELECT_RANGE*1+:SELECT_RANGE] == idx[SELECT_RANGE-1:0])
+                select[SELECT_WIDTH*1+:DATA_RANGE] == idx[DATA_RANGE-1:0])
                 selectAgent = {1'b1, 2'b1};
             else if (en[2] == 1'b1 &&
-                select[SELECT_RANGE*2+:SELECT_RANGE] == idx[SELECT_RANGE-1:0])
+                select[SELECT_WIDTH*2+:DATA_RANGE] == idx[DATA_RANGE-1:0])
                 selectAgent = {1'b1, 2'b10};
             else if (en[3] == 1'b1 &&
-                select[SELECT_RANGE*3+:SELECT_RANGE] == idx[SELECT_RANGE-1:0])
+                select[SELECT_WIDTH*3+:DATA_RANGE] == idx[DATA_RANGE-1:0])
                 selectAgent = {1'b1, 2'b11};
         end
     endfunction
@@ -115,18 +115,18 @@ module ReadSwitch
     //-------------------------------------------------------------------------
     for (wrid=0; wrid<NB_WRAGENT; wrid=wrid+1) begin : ADDR_SWITCHS
 
-        wire [SELECT_RANGE:0] agtSel;
+        wire [DATA_RANGE:0] selectedAgt;
 
         // Select the agent to drive the bram bank
         // MSB indicates the bram needs to be activated, LSBs are the agent id
-        assign agtSel = selectAgent(wrid, m_rden, bank_select[0+:SELECT_RANGE]);
+        assign selectedAgt = selectAgent(wrid, m_rden, bank_select);
 
         // Switch enable and address. Enable only if is really selected
-        assign s_rden[wrid] = agtSel[SELECT_RANGE] &
-                              m_rden[agtSel[SELECT_RANGE-1:0]];
+        assign s_rden[wrid] = selectedAgt[DATA_RANGE] &
+                              m_rden[selectedAgt[DATA_RANGE-1:0]];
 
         assign s_rdaddr[ADDR_WIDTH*wrid+:ADDR_WIDTH] =
-            m_rdaddr[ADDR_WIDTH*agtSel[SELECT_RANGE-1:0]+:ADDR_WIDTH];
+            m_rdaddr[ADDR_WIDTH*selectedAgt[DATA_RANGE-1:0]+:ADDR_WIDTH];
     end
 
     //-------------------------------------------------------------------------
@@ -135,7 +135,8 @@ module ReadSwitch
     //-------------------------------------------------------------------------
     for (rdid=0; rdid<NB_RDAGENT; rdid=rdid+1) begin : DATA_SWITCHS
 
-        logic [SELECT_WIDTH-1:0] dataSel;
+        localparam WRCOLFLAG = SELECT_WIDTH - 1;
+        logic [SELECT_WIDTH-1:0] data2Select;
         logic rdcollision;
 
         // Instance detecting which read agents access the same
@@ -144,7 +145,7 @@ module ReadSwitch
             NB_RDAGENT,
             WRITE_COLLISION,
             SELECT_WIDTH,
-            SELECT_RANGE
+            DATA_RANGE
         ) collision_inst (
             aclk,
             aresetn,
@@ -157,20 +158,20 @@ module ReadSwitch
         // Pipeline the selector while BRAM banks uses a FFDed output
         always @ (posedge aclk or negedge aresetn) begin
             if (aresetn == 1'b0)
-                dataSel <= {SELECT_WIDTH{1'b0}};
+                data2Select <= {SELECT_WIDTH{1'b0}};
             else
                 // Select the bank select range associated to the read agent
                 // and shrink up the bank index, thus remove the collision flag
-                dataSel <= bank_select[SELECT_WIDTH*rdid+:SELECT_WIDTH];
+                data2Select <= bank_select[SELECT_WIDTH*rdid+:SELECT_WIDTH];
         end
 
         // Simply select the part to transmit to the agent.
         assign m_rddata[DATA_WIDTH*rdid+:DATA_WIDTH] =
-            s_rddata[DATA_WIDTH*dataSel[SELECT_RANGE-1:0]+:DATA_WIDTH];
+            s_rddata[DATA_WIDTH*data2Select[DATA_RANGE-1:0]+:DATA_WIDTH];
 
         // Bit 0 propagates write collision flag
         if (WRITE_COLLISION)
-            assign m_rdcollision[rdid*2+0] = dataSel[SELECT_WIDTH-1];
+            assign m_rdcollision[rdid*2+0] = data2Select[WRCOLFLAG];
         else
             assign m_rdcollision[rdid*2+0] = 1'b0;
 
