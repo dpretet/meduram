@@ -13,7 +13,7 @@ module MemoryMapAccounter
 
     #(
         // Write/Read address width
-        parameter ADDR_WIDTH = 8,
+        parameter ADDR_WIDTH = 3,
         // RAM depth
         parameter RAM_DEPTH = 2**ADDR_WIDTH,
         // Number of write agent

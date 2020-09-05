@@ -12,9 +12,9 @@ module ReadSwitch
 
     #(
         // Write/Read address width
-        parameter ADDR_WIDTH = 8,
+        parameter ADDR_WIDTH = 3,
         // Data Width in bits
-        parameter DATA_WIDTH = 32,
+        parameter DATA_WIDTH = 8,
         // Number of write agent, thus number of bank
         parameter NB_WRAGENT = 2,
         // Number of read agent
@@ -60,10 +60,10 @@ module ReadSwitch
         input [             NB_RDAGENT-1:0] en;     // Enable gathered
         input [NB_RDAGENT*SELECT_WIDTH-1:0] select; // Select gathered
 
-        selectAgent = {DATA_RANGE+1{1'b0}};
-
         // Assert MSB to signify an agent has been selected. Else
         // we can't be sure it's not the default value 0.
+        //
+        selectAgent = {DATA_RANGE+1{1'b0}};
 
         if (NB_RDAGENT == 1) begin
             if (en[0] == 1'b1 &&
@@ -138,6 +138,7 @@ module ReadSwitch
         localparam WRCOLFLAG = SELECT_WIDTH - 1;
         logic [SELECT_WIDTH-1:0] data2Select;
         logic rdcollision;
+        logic rden;
 
         // Instance detecting which read agents access the same
         // memory bank at the same time
@@ -157,27 +158,35 @@ module ReadSwitch
 
         // Pipeline the selector while BRAM banks uses a FFDed output
         always @ (posedge aclk or negedge aresetn) begin
-            if (aresetn == 1'b0)
+            if (aresetn == 1'b0) begin
+                rden <= 1'b0;
                 data2Select <= {SELECT_WIDTH{1'b0}};
-            else
+            end else begin
                 // Select the bank select range associated to the read agent
                 // and shrink up the bank index, thus remove the collision flag
+                rden <= m_rden[rdid];
                 data2Select <= bank_select[SELECT_WIDTH*rdid+:SELECT_WIDTH];
+            end
         end
 
         // Simply select the part to transmit to the agent.
-        assign m_rddata[DATA_WIDTH*rdid+:DATA_WIDTH] =
-            s_rddata[DATA_WIDTH*data2Select[DATA_RANGE-1:0]+:DATA_WIDTH];
+        assign m_rddata[DATA_WIDTH*rdid+:DATA_WIDTH] = (rden) ?
+            s_rddata[DATA_WIDTH*data2Select[DATA_RANGE-1:0]+:DATA_WIDTH]:
+            m_rddata[DATA_WIDTH*rdid+:DATA_WIDTH];
 
         // Bit 0 propagates write collision flag
         if (WRITE_COLLISION)
-            assign m_rdcollision[rdid*2+0] = data2Select[WRCOLFLAG];
+            assign m_rdcollision[rdid*2+0] = (rden) ?
+                                             data2Select[WRCOLFLAG]:
+                                             m_rdcollision[rdid*2+0];
         else
             assign m_rdcollision[rdid*2+0] = 1'b0;
 
         // Bit 1 propagates read collision flag
         if (READ_COLLISION)
-            assign m_rdcollision[rdid*2+1] = rdcollision;
+            assign m_rdcollision[rdid*2+1] = (rden) ? 
+                                             rdcollision:
+                                             m_rdcollision[rdid*2+1];
         else
             assign m_rdcollision[rdid*2+1] = 1'b0;
     end

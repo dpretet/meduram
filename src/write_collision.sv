@@ -16,7 +16,7 @@ module write_collision
 
     #(
         // Write/Read address width
-        parameter ADDR_WIDTH = 8,
+        parameter ADDR_WIDTH = 3,
         // Number of write agent
         parameter NB_WRAGENT = 2
     )(

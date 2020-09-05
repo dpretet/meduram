@@ -15,7 +15,7 @@ module ReadCollision
         parameter NB_RDAGENT = 2,
         parameter WRITE_COLLISION = 1,
         parameter SELECT_WIDTH = 4,
-        parameter SELECT_RANGE = 4
+        parameter SELECT_RANGE = 3
     )(
         input  wire                               aclk,
         input  wire                               aresetn,

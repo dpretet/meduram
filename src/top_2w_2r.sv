@@ -19,7 +19,7 @@ module top
         // RAM depth
         parameter RAM_DEPTH = 2**ADDR_WIDTH,
         // Data Width in bits
-        parameter DATA_WIDTH = 32,
+        parameter DATA_WIDTH = 8,
         // Enable write collision support
         parameter WRITE_COLLISION = 1,
         // Enable read collision support

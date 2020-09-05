@@ -12,11 +12,11 @@ module Bram
 
     #(
     // Addr Width in bits
-    parameter ADDR_WIDTH = 8,
+    parameter ADDR_WIDTH = 3,
     // RAM depth
     parameter RAM_DEPTH = 2**ADDR_WIDTH,
     // Data Width in bits
-    parameter DATA_WIDTH = 32,
+    parameter DATA_WIDTH = 8,
     // Specify number of output FFD (0 or 1) for read channel
     parameter READ_NB_FFD = 1
     )(

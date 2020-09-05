@@ -91,7 +91,8 @@ main() {
 
     if [[ $1 == "lint" ]]; then
         printinfo "Start linting"
-        find src -name "*.*" -exec verilator --lint-only {} \;
+        find src -name "*.*" -exec verilator \
+                                   --lint-only -Wno-lint +1800-2017ext+sv {} \;
     fi
     if [[ $1 == "sim" ]]; then
         printinfo "Start simulation"
