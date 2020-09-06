@@ -1,24 +1,23 @@
+// copyright damien pretet 2020
+// distributed under the mit license
+// https://opensource.org/licenses/mit-license.php
+
 `include "svut_h.sv"
 
 `timescale 1 ns / 100 ps
 `default_nettype none
 
-module top_2w_2r_unit_test;
+module top_2w_2r_core_unit_test;
 
     `SVUT_SETUP
 
     parameter ADDR_WIDTH = 3;
     parameter RAM_DEPTH = 2**ADDR_WIDTH;
     parameter DATA_WIDTH = 8;
-
-    parameter ALL = 0;
-    parameter AGENT1 = 1;
-    parameter AGENT2 = 2;
-    parameter MAX_TEST_RUN = 4;
-    // Enable write collision support
     parameter WRITE_COLLISION = 1;
-    // Enable read collision support
     parameter READ_COLLISION = 1;
+
+    parameter MAX_TEST_RUN = 4;
 
     reg                   aclk;
     reg                   aresetn;
@@ -45,9 +44,14 @@ module top_2w_2r_unit_test;
     integer               collision1;
     integer               collision2;
 
-    `include "functions.sv"
+    initial begin
+        $dumpfile("top_2w_2r_core_unit_test.vcd");
+        $dumpvars(0, top_2w_2r_core_unit_test);
+    end
 
-    top
+    `include "ram_tasks.sv"
+
+    top_core
     #(
     ADDR_WIDTH,
     RAM_DEPTH,

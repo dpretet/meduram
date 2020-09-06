@@ -1,3 +1,10 @@
+// copyright damien pretet 2020
+// distributed under the mit license
+// https://opensource.org/licenses/mit-license.php
+
+parameter AGENT1 = 1;
+parameter AGENT2 = 2;
+
 /// Check if the agent index to use is correct
 task checkAgent(input integer agent);
     if (agent < AGENT1) begin

@@ -11,7 +11,7 @@
         $finish(1);\
     end
 
-module top
+module top_core
 
     #(
         // Addr Width in bits
@@ -49,7 +49,10 @@ module top
         `assert((NB_RDAGENT == 1 && READ_COLLISION > 0), "READ collision can be activated if only more than one read agent is used");
     end
 
-    initial $dumpvars(0, top);
+    // initial begin
+        // $dumpfile("top_core.vcd");
+        // $dumpvars(0, top_core);
+    // end
 
     localparam NB_WRAGENT   = 2;
     localparam NB_RDAGENT   = 2;

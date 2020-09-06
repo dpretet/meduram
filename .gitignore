@@ -131,8 +131,7 @@ tags
 .DS_Store
 TODO.md
 .svut
-dump.vcd
+*.vcd
 *.out
-svut_h.sv
 syn/synth.v
 syn/vsclib013.lib

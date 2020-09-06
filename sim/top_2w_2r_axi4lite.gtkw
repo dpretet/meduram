@@ -1,0 +1,145 @@
+[*]
+[*] GTKWave Analyzer v3.3.103 (w)1999-2019 BSI
+[*] Sun Sep 13 07:00:27 2020
+[*]
+[dumpfile] "/Users/damien/workspace/hdl/meduram/sim/top_2w_2r_axi4lite_unit_test.vcd"
+[dumpfile_mtime] "Sun Sep 13 06:49:44 2020"
+[dumpfile_size] 44892
+[savefile] "/Users/damien/workspace/hdl/meduram/sim/top_2w_2r_axi4lite.gtkw"
+[timestart] 0
+[size] 1440 900
+[pos] -1 -1
+*-15.338223 74300 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] top_2w_2r_axi4lite_unit_test.
+[treeopen] top_2w_2r_axi4lite_unit_test.dut.
+[treeopen] top_2w_2r_axi4lite_unit_test.dut.wragent1.
+[sst_width] 303
+[signals_width] 463
+[sst_expanded] 1
+[sst_vpaned_height] 263
+@c00200
+-writeagent1
+@28
+top_2w_2r_axi4lite_unit_test.dut.wragent1.aclk
+top_2w_2r_axi4lite_unit_test.dut.wragent1.aresetn
+@200
+-
+@28
+top_2w_2r_axi4lite_unit_test.dut.wragent1.awaddr[2:0]
+top_2w_2r_axi4lite_unit_test.dut.wragent1.awprot[1:0]
+top_2w_2r_axi4lite_unit_test.dut.wragent1.awvalid
+top_2w_2r_axi4lite_unit_test.dut.wragent1.awready
+@200
+-
+@22
+top_2w_2r_axi4lite_unit_test.dut.wragent1.wdata[7:0]
+@28
+top_2w_2r_axi4lite_unit_test.dut.wragent1.wstrb
+top_2w_2r_axi4lite_unit_test.dut.wragent1.wvalid
+top_2w_2r_axi4lite_unit_test.dut.wragent1.wready
+@200
+-
+@28
+top_2w_2r_axi4lite_unit_test.dut.wragent1.bvalid
+top_2w_2r_axi4lite_unit_test.dut.wragent1.bready
+top_2w_2r_axi4lite_unit_test.dut.wragent1.bresp[1:0]
+@200
+-
+@28
+top_2w_2r_axi4lite_unit_test.dut.wragent1.awc_winc
+top_2w_2r_axi4lite_unit_test.dut.wragent1.awc_full
+top_2w_2r_axi4lite_unit_test.dut.wragent1.awc_rinc
+top_2w_2r_axi4lite_unit_test.dut.wragent1.awc_empty
+top_2w_2r_axi4lite_unit_test.dut.wragent1.dwc_winc
+top_2w_2r_axi4lite_unit_test.dut.wragent1.dwc_full
+top_2w_2r_axi4lite_unit_test.dut.wragent1.dwc_rinc
+top_2w_2r_axi4lite_unit_test.dut.wragent1.dwc_empty
+@200
+-
+@28
+top_2w_2r_axi4lite_unit_test.dut.wragent1.bready_cdc[1:0]
+top_2w_2r_axi4lite_unit_test.dut.wragent1.bready_core
+top_2w_2r_axi4lite_unit_test.dut.wragent1.bvalid_cdc[1:0]
+top_2w_2r_axi4lite_unit_test.dut.wragent1.bvalid_core
+@22
+top_2w_2r_axi4lite_unit_test.dut.wragent1.or_cnt[3:0]
+@200
+-
+@28
+top_2w_2r_axi4lite_unit_test.dut.wragent1.aclk_core
+top_2w_2r_axi4lite_unit_test.dut.wragent1.aresetn_core
+top_2w_2r_axi4lite_unit_test.dut.wragent1.wren
+top_2w_2r_axi4lite_unit_test.dut.wragent1.wraddr[2:0]
+@22
+top_2w_2r_axi4lite_unit_test.dut.wragent1.wrdata[7:0]
+@1401200
+-writeagent1
+@800200
+-read agent 1
+@28
+top_2w_2r_axi4lite_unit_test.dut.rdagent1.aclk
+top_2w_2r_axi4lite_unit_test.dut.rdagent1.aresetn
+top_2w_2r_axi4lite_unit_test.dut.rdagent1.araddr[2:0]
+top_2w_2r_axi4lite_unit_test.dut.rdagent1.arprot[1:0]
+top_2w_2r_axi4lite_unit_test.dut.rdagent1.arvalid
+top_2w_2r_axi4lite_unit_test.dut.rdagent1.arready
+@22
+top_2w_2r_axi4lite_unit_test.dut.rdagent1.rdata[7:0]
+@c00028
+top_2w_2r_axi4lite_unit_test.dut.rdagent1.rresp[1:0]
+@28
+(0)top_2w_2r_axi4lite_unit_test.dut.rdagent1.rresp[1:0]
+(1)top_2w_2r_axi4lite_unit_test.dut.rdagent1.rresp[1:0]
+@1401200
+-group_end
+@28
+top_2w_2r_axi4lite_unit_test.dut.rdagent1.rvalid
+top_2w_2r_axi4lite_unit_test.dut.rdagent1.rready
+@200
+-
+@28
+top_2w_2r_axi4lite_unit_test.dut.rdagent1.arc_winc
+top_2w_2r_axi4lite_unit_test.dut.rdagent1.arc_full
+top_2w_2r_axi4lite_unit_test.dut.rdagent1.arc_rinc
+@29
+top_2w_2r_axi4lite_unit_test.dut.rdagent1.arc_empty
+@28
+top_2w_2r_axi4lite_unit_test.dut.rdagent1.rrc_winc
+top_2w_2r_axi4lite_unit_test.dut.rdagent1.rrc_full
+top_2w_2r_axi4lite_unit_test.dut.rdagent1.rrc_rinc
+top_2w_2r_axi4lite_unit_test.dut.rdagent1.rrc_empty
+@22
+top_2w_2r_axi4lite_unit_test.dut.rdagent1.rdcmpl_core[9:0]
+top_2w_2r_axi4lite_unit_test.dut.rdagent1.rdcmpl[9:0]
+@200
+-
+@28
+top_2w_2r_axi4lite_unit_test.dut.rdagent1.aclk_core
+top_2w_2r_axi4lite_unit_test.dut.rdagent1.aresetn_core
+top_2w_2r_axi4lite_unit_test.dut.rdagent1.rden
+top_2w_2r_axi4lite_unit_test.dut.rdagent1.rdaddr[2:0]
+@22
+top_2w_2r_axi4lite_unit_test.dut.rdagent1.rddata[7:0]
+@28
+top_2w_2r_axi4lite_unit_test.dut.rdagent1.rdcollision[1:0]
+@1000200
+-read agent 1
+@c00200
+-top_axi4lite
+@28
+top_2w_2r_axi4lite_unit_test.aclk_rd1
+top_2w_2r_axi4lite_unit_test.aresetn_rd1
+top_2w_2r_axi4lite_unit_test.arvalid1
+top_2w_2r_axi4lite_unit_test.arready1
+top_2w_2r_axi4lite_unit_test.arprot1[1:0]
+top_2w_2r_axi4lite_unit_test.araddr1[2:0]
+top_2w_2r_axi4lite_unit_test.rvalid1
+top_2w_2r_axi4lite_unit_test.rready1
+@22
+top_2w_2r_axi4lite_unit_test.rdata1[7:0]
+@28
+top_2w_2r_axi4lite_unit_test.rresp1[1:0]
+@1401200
+-top_axi4lite
+[pattern_trace] 1
+[pattern_trace] 0

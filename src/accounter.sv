@@ -1,12 +1,12 @@
-// Copyright Damien Pretet 2020
-// Distributed under the MIT License
+// copyright damien pretet 2020
+// distributed under the mit license
 // https://opensource.org/licenses/mit-license.php
 
-// Accounter monitors the write operations to store which master agent
-// last accessed a memory row. When a read agent accesses a memory row,
+// accounter monitors the write operations to store which master agent
+// last accessed a memory row. when a read agent accesses a memory row,
 // the accounter uses this information to control the multiplexer and
 // choose the right memory bank.
-// Internally, the accounter uses FFDs to store this information.
+// internally, the accounter uses ffds to store this information.
 
 `timescale 1 ns / 100 ps
 `default_nettype none
