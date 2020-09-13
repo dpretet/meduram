@@ -44,8 +44,7 @@ module axi4l_read
     logic rrc_full;
     logic rrc_rinc;
     logic rrc_empty;
-    logic [2-1:0] rresp_out;
-
+    logic [DATA_WIDTH+2-1:0] rdcmpl_core, rdcmpl;
 
     assign arready = ~arc_full;
     assign arc_winc = arvalid & arready;
@@ -70,8 +69,8 @@ module axi4l_read
     .arempty (             )
     );
 
-    assign arc_rinc = rden;
     assign rden = ~arc_empty;
+    assign arc_rinc = rden;
 
     always @ (posedge aclk_core or negedge aresetn_core) begin
         if (aresetn_core == 1'b0)
@@ -82,7 +81,6 @@ module axi4l_read
 
     // Read Data Channel
     
-    logic [DATA_WIDTH+2-1:0] rdcmpl_core, rdcmpl;
     assign rdcmpl_core = {rdcollision, rddata};
  
     async_fifo #(

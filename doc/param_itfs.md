@@ -2,22 +2,22 @@
 
 ## Parameters
 
-    - ADDR_WIDTH: width defining all address bus
-    - RAM_DEPTH: log2(ADDR_WIDTH)
-    - DATA_WIDTH: width defining all data bus
-    - WRITE_COLLISION: enable write collision detection
-    - READ_COLLISION: enable read collision detection
+| Name | Description |
+|-----|-----------|
+| ADDR_WIDTH |  Address width in bits |
+| RAM_DEPTH |  log2(ADDR_WIDTH) |
+| DATA_WIDTH |  data width in bits |
+| WRITE_COLLISION | Activate write collision detection (0 or 1) |
+| READ_COLLISION | Activate read collision detection (0 or 1) |
 
 ## Interface
 
-    - wren: write enable
-    - wraddr: write address
-    - wrdata: data to write in `waddr` address
-    - rden: read enable
-    - rdaddr: read address
-    - rddata: data read at `rdaddr` address
-    - rdcollision: collision flags:
-        - bit0: write collision at `rdaddr` occured, several agents wrote at
-          the same address at the same time
-        - bit1: read collision detetected, several agents tried to access
-          the same memory bank
+|Signal| Description|
+|-----|-----------|
+| wren | write enable|
+| wraddr | write address|
+| wrdata | data to write in `waddr` address|
+| rden | read enable|
+| rdaddr | read address|
+| rddata | data read at `rdaddr` address|
+| rdcollision | collision flags: bit 0 for write collision, bit 1 for read collision|
