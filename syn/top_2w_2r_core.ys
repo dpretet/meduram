@@ -6,10 +6,10 @@ read -sv ../src/mem_map_accounter.sv
 read -sv ../src/read_switch.sv
 read -sv ../src/write_collision.sv
 read -sv ../src/read_collision.sv
-read -sv ../src/top_2w_2r.sv
+read -sv ../src/top_2w_2r_core.sv
 
 # elaborate design hierarchy
-hierarchy -check -top top
+hierarchy -check -top top_core
 
 # The synthesis flow:
 

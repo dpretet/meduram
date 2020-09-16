@@ -11,4 +11,4 @@ if [[ ! -f "./vsclib013.lib" ]]; then
 fi
 
 yosys -V
-yosys ./top_2w_2r.ys | tee yosys.log
+yosys ./top_2w_2r_core.ys | tee yosys_top_2w_2r_core.log
