@@ -10,4 +10,5 @@ if [[ ! -f "./vsclib013.lib" ]]; then
     wget http://www.vlsitechnology.org/synopsys/vsclib013.lib
 fi
 
+yosys -V
 yosys ./top_2w_2r.ys | tee yosys.log

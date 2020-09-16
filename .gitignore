@@ -135,3 +135,4 @@ TODO.md
 *.out
 syn/synth.v
 syn/vsclib013.lib
+log
