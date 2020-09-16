@@ -1,0 +1,10 @@
+language: bash
+dist: bionic
+before_install:
+  - sudo add-apt-repository ppa:team-electronics/ppa -y
+  - sudo apt-get update -q
+  - sudo apt-get install iverilog
+  - sudo apt-get install yosys
+script:
+    - ./flow.sh sim
+    - ./flow.sh syn
