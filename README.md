@@ -4,6 +4,8 @@
   <img width="300" height="300" src="./doc/gorgone.jpg">
 </p>
 
+[![Build Status](https://travis-ci.org/dpretet/meduram.svg?branch=master)](https://travis-ci.org/dpretet/meduram)
+
 ## Introduction
 
 Meduram is an IP core implementing a multi-port block RAM in order to share
