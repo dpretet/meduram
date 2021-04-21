@@ -19,7 +19,8 @@ collisions occur.
 
 It's widely inspired by the concepts discussed in the paper
 ["Efficient Multi-Ported Memories for FPGAs"](http://www.eecg.toronto.edu/~steffan/papers/laforest_fpga10.pdf)
-by Charles Eric LaForest and J. Gregory Steffan.
+by Charles Eric LaForest and J. Gregory Steffan. This [article](https://tomverbeure.github.io/2019/08/03/Multiport-Memories.html)
+is also a good starting point to understand how to build this type of core.
 
 ## Features
 
